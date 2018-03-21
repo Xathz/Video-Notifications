@@ -1,4 +1,6 @@
-﻿using VideoNotifications.Database.CollectionType;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using VideoNotifications.Database.CollectionType;
 
 namespace VideoNotifications.Settings {
 
@@ -54,6 +56,7 @@ namespace VideoNotifications.Settings {
         /// When a new channel is added, set the video status to this.
         /// This only applies to the first batch of videos that gets added to the database, when you add a new channel.
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public Status NewChannelDefaultVideoStatus { get; set; } = Status.Unwatched;
 
         /// <summary>

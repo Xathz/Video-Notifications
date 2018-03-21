@@ -30,10 +30,14 @@ namespace VideoNotifications {
         /// </summary>
         public static string ApplicationDirectory => Path.GetDirectoryName(ExecutablePath);
 
+        private static string _WorkingDirectory = Path.Combine(ApplicationDirectory, ExecutableName);
         /// <summary>
         /// Working directory for the application.
         /// </summary>
-        public static string WorkingDirectory => Path.Combine(ApplicationDirectory, ExecutableName);
+        public static string WorkingDirectory {
+            get => _WorkingDirectory;
+            set => _WorkingDirectory = value;
+        }
 
         /// <summary>
         /// Log files for the application.

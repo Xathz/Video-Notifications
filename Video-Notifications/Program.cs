@@ -28,9 +28,22 @@ namespace VideoNotifications {
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main() {
+        static void Main(string[] args) {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            if (args.Length > 0) {
+                int length = (args.Length - 1);
+                for (int i = 0; i <= length; i++) {
+                    string thisArg = args[i];
+                    string nextArg = ((i + 1) > length) ? "" : args[i + 1];
+
+                    if (thisArg == "-w" || thisArg == "--workingdirectory") {
+                        Constants.WorkingDirectory = nextArg;
+                    }
+
+                }
+            }
 
             Directory.CreateDirectory(Constants.WorkingDirectory);
             Directory.CreateDirectory(Constants.LogDirectory);

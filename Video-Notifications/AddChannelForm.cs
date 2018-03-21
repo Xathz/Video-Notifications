@@ -46,7 +46,7 @@ namespace VideoNotifications {
                 SettingsManager.Configuration.AddChannelWindow.X = Location.X;
                 SettingsManager.Configuration.AddChannelWindow.Y = Location.Y;
                 SettingsManager.Configuration.AddChannelWindow.Width = 437;
-                SettingsManager.Configuration.DeleteChannelWindow.Height = 539;
+                SettingsManager.Configuration.AddChannelWindow.Height = 539;
             }
         }
 
