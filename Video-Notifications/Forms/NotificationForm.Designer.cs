@@ -1,4 +1,4 @@
-﻿namespace VideoNotifications {
+﻿namespace VideoNotifications.Forms {
     partial class NotificationForm {
         /// <summary>
         /// Required designer variable.

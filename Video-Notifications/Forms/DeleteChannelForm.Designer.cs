@@ -1,4 +1,4 @@
-﻿namespace VideoNotifications {
+﻿namespace VideoNotifications.Forms {
     partial class DeleteChannelForm {
         /// <summary>
         /// Required designer variable.

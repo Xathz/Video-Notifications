@@ -7,7 +7,7 @@ using VideoNotifications.Database.CollectionType;
 using VideoNotifications.Settings;
 using VideoNotifications.Utilities;
 
-namespace VideoNotifications {
+namespace VideoNotifications.Forms {
 
     public partial class NotificationForm : Form {
 
@@ -60,7 +60,7 @@ namespace VideoNotifications {
         }
 
         private void NotificationForm_Load(object sender, EventArgs e) {
-            Program.OpenForms.Add(this);
+            FormsManager.OpenForms.Add(this);
 
             EnableControlsCountdownTimer.Start();
             EnableControlsTimer.Start();
@@ -68,7 +68,7 @@ namespace VideoNotifications {
 
         private void NotificationForm_FormClosing(object sender, FormClosingEventArgs e) => SettingsManager.Save();
 
-        private void NotificationForm_FormClosed(object sender, FormClosedEventArgs e) => Program.OpenForms.Remove(this);
+        private void NotificationForm_FormClosed(object sender, FormClosedEventArgs e) => FormsManager.OpenForms.Remove(this);
 
         private void NotificationForm_LocationChanged(object sender, EventArgs e) {
             if (WindowState == FormWindowState.Normal) {

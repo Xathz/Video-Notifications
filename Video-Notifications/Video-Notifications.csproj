@@ -103,10 +103,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddChannelForm.cs">
+    <Compile Include="Forms\AddChannelForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddChannelForm.Designer.cs">
+    <Compile Include="Forms\AddChannelForm.Designer.cs">
       <DependentUpon>AddChannelForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
@@ -117,12 +117,13 @@
     <Compile Include="Database\DatabaseBase.cs" />
     <Compile Include="Database\Files.cs" />
     <Compile Include="Database\Videos.cs" />
-    <Compile Include="DeleteChannelForm.cs">
+    <Compile Include="Forms\DeleteChannelForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DeleteChannelForm.Designer.cs">
+    <Compile Include="Forms\DeleteChannelForm.Designer.cs">
       <DependentUpon>DeleteChannelForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormsManager.cs" />
     <Compile Include="LoggingManager.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -134,10 +135,10 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NotificationForm.cs">
+    <Compile Include="Forms\NotificationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NotificationForm.Designer.cs">
+    <Compile Include="Forms\NotificationForm.Designer.cs">
       <DependentUpon>NotificationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -156,16 +157,16 @@
     <Compile Include="YouTube\VideoInfo.cs" />
     <Compile Include="YouTube\VideoInfoBulk.cs" />
     <Compile Include="YouTube\YouTubeBase.cs" />
-    <EmbeddedResource Include="AddChannelForm.resx">
+    <EmbeddedResource Include="Forms\AddChannelForm.resx">
       <DependentUpon>AddChannelForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DeleteChannelForm.resx">
+    <EmbeddedResource Include="Forms\DeleteChannelForm.resx">
       <DependentUpon>DeleteChannelForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NotificationForm.resx">
+    <EmbeddedResource Include="Forms\NotificationForm.resx">
       <DependentUpon>NotificationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -8,7 +8,7 @@ using VideoNotifications.Database.CollectionType;
 using VideoNotifications.Settings;
 using VideoNotifications.Utilities;
 
-namespace VideoNotifications {
+namespace VideoNotifications.Forms {
 
     public partial class DeleteChannelForm : Form {
 
@@ -28,11 +28,11 @@ namespace VideoNotifications {
         }
 
         private void DeleteChannelForm_Load(object sender, EventArgs e) {
-            if (Program.GetOpenForm(this) != null) {
-                Program.GetOpenForm(this).BringToFront();
+            if (FormsManager.GetOpenForm(this) != null) {
+                FormsManager.GetOpenForm(this).BringToFront();
                 Dispose();
             } else {
-                Program.OpenForms.Add(this);
+                FormsManager.OpenForms.Add(this);
             }
 
             AddAllChannels();
@@ -40,7 +40,7 @@ namespace VideoNotifications {
 
         private void DeleteChannelForm_FormClosing(object sender, FormClosingEventArgs e) => SettingsManager.Save();
 
-        private void DeleteChannelForm_FormClosed(object sender, FormClosedEventArgs e) => Program.OpenForms.Remove(this);
+        private void DeleteChannelForm_FormClosed(object sender, FormClosedEventArgs e) => FormsManager.OpenForms.Remove(this);
 
         private void DeleteChannelForm_LocationChanged(object sender, EventArgs e) {
             if (WindowState == FormWindowState.Normal) {
@@ -68,7 +68,7 @@ namespace VideoNotifications {
                         Files.DeleteImage(channel.ChannelID);
 
                         AddAllChannels();
-                        Program.StaticMainForm.AddAllChannels();
+                        FormsManager.StaticMainForm.AddAllChannels();
                         LoggingManager.Log.Info($"Deleted channel: {channel.Title} ({channel.ChannelID})");
                         MessageBox.Show($"{channel.Title} was deleted and {channelVideosTotal} videos were removed from the database.", "Channel Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     } catch (Exception ex) {

@@ -9,7 +9,7 @@ using VideoNotifications.Settings;
 using VideoNotifications.Utilities;
 using VideoNotifications.YouTube;
 
-namespace VideoNotifications {
+namespace VideoNotifications.Forms {
 
     public partial class AddChannelForm : Form {
 
@@ -29,17 +29,17 @@ namespace VideoNotifications {
         }
 
         private void AddChannelForm_Load(object sender, EventArgs e) {
-            if (Program.GetOpenForm(this) != null) {
-                Program.GetOpenForm(this).BringToFront();
+            if (FormsManager.GetOpenForm(this) != null) {
+                FormsManager.GetOpenForm(this).BringToFront();
                 Dispose();
             } else {
-                Program.OpenForms.Add(this);
+                FormsManager.OpenForms.Add(this);
             }
         }
 
         private void AddChannelForm_FormClosing(object sender, FormClosingEventArgs e) => SettingsManager.Save();
 
-        private void AddChannelForm_FormClosed(object sender, FormClosedEventArgs e) => Program.OpenForms.Remove(this);
+        private void AddChannelForm_FormClosed(object sender, FormClosedEventArgs e) => FormsManager.OpenForms.Remove(this);
 
         private void AddChannelForm_LocationChanged(object sender, EventArgs e) {
             if (WindowState == FormWindowState.Normal) {
@@ -87,7 +87,7 @@ namespace VideoNotifications {
                             Files.StoreImage($"{video.VideoID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(video.ThumbnailURL));
                         }
 
-                        Program.StaticMainForm.AddAllChannels();
+                        FormsManager.StaticMainForm.AddAllChannels();
                         LoggingManager.Log.Info($"Added channel: {newChannel.Info.Title} ({newChannel.Info.ChannelID})");
                         EnableControls();
                         MessageBox.Show($"{newChannel.Info.Title} was added along with {videos.Count} videos.", "Channel Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
