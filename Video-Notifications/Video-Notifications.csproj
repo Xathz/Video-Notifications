@@ -117,6 +117,12 @@
     <Compile Include="Database\DatabaseBase.cs" />
     <Compile Include="Database\Files.cs" />
     <Compile Include="Database\Videos.cs" />
+    <Compile Include="Forms\APIKeyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\APIKeyForm.Designer.cs">
+      <DependentUpon>APIKeyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\DeleteChannelForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +165,9 @@
     <Compile Include="YouTube\YouTubeBase.cs" />
     <EmbeddedResource Include="Forms\AddChannelForm.resx">
       <DependentUpon>AddChannelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\APIKeyForm.resx">
+      <DependentUpon>APIKeyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DeleteChannelForm.resx">
       <DependentUpon>DeleteChannelForm.cs</DependentUpon>

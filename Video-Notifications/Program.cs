@@ -37,6 +37,11 @@ namespace VideoNotifications {
             SettingsManager.Load();
             DatabaseBase.Initialize();
 
+            if (string.IsNullOrWhiteSpace(SettingsManager.Configuration.YouTubeAPIKey)) {
+                APIKeyForm apiKeyForm = new APIKeyForm();
+                apiKeyForm.ShowDialog();
+            }
+
             FormsManager.StaticMainForm = new MainForm();
             FormsManager.OpenForms.Add(FormsManager.StaticMainForm);
             Application.Run(FormsManager.StaticMainForm);

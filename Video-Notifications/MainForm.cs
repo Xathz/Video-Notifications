@@ -187,6 +187,11 @@ namespace VideoNotifications {
 
         private void YouTubeCheckWorker_DoWork(object sender, DoWorkEventArgs e) {
             try {
+                if (string.IsNullOrWhiteSpace(SettingsManager.Configuration.YouTubeAPIKey)) {
+                    LoggingManager.Log.Error(new ArgumentNullException(nameof(SettingsManager.Configuration.YouTubeAPIKey)), "The YouTubeAPIKey can not be: null, blank, or just whitespace. Aborted YouTubeCheckWorker.");
+                    return;
+                }
+
                 foreach (YouTubeChannel channel in Channels.GetAll()) {
                     ChannelVideos channelVideos = new ChannelVideos(channel.ChannelID);
                     List<string> videosToGetInfo = new List<string>();
