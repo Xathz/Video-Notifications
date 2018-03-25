@@ -56,6 +56,8 @@ namespace VideoNotifications {
 
             TrayNotifyIcon.Visible = true;
             YouTubeCheckTimer.Start();
+
+            ProcessUtils.SetForegroundWindow(Handle.ToInt32());
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {

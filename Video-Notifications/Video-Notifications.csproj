@@ -130,6 +130,12 @@
       <DependentUpon>DeleteChannelForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormsManager.cs" />
+    <Compile Include="Forms\SplashForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SplashForm.Designer.cs">
+      <DependentUpon>SplashForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoggingManager.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -171,6 +177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DeleteChannelForm.resx">
       <DependentUpon>DeleteChannelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplashForm.resx">
+      <DependentUpon>SplashForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace VideoNotifications.Forms {
@@ -40,6 +41,16 @@ namespace VideoNotifications.Forms {
         /// <para>Currently open forms are stored in <see cref="OpenForms"/>.</para>
         /// </summary>
         public static Form GetOpenForm(Form form) => _OpenForms.FirstOrDefault(f => f.GetType() == form.GetType());
+
+        /// <summary>
+        /// Show <see cref="SplashForm"/>.
+        /// </summary>
+        public static void ShowSplashForm() => SplashForm.ShowSplashForm();
+
+        /// <summary>
+        /// Close <see cref="SplashForm"/>.
+        /// </summary>
+        public static void CloseSplashForm() => SplashForm.CloseSplashForm();
 
     }
 

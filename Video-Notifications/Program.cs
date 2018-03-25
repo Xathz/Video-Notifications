@@ -16,6 +16,7 @@ namespace VideoNotifications {
         static void Main(string[] args) {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            FormsManager.ShowSplashForm();
 
             if (args.Length > 0) {
                 int length = (args.Length - 1);
@@ -37,6 +38,7 @@ namespace VideoNotifications {
             SettingsManager.Load();
             DatabaseBase.Initialize();
 
+            FormsManager.CloseSplashForm();
             if (string.IsNullOrWhiteSpace(SettingsManager.Configuration.YouTubeAPIKey)) {
                 APIKeyForm apiKeyForm = new APIKeyForm();
                 apiKeyForm.ShowDialog();
