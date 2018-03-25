@@ -53,8 +53,14 @@ namespace VideoNotifications.Forms {
             ChannelLabel.Text = $"A new video was posted by {_Channel.Title} {_Video.Posted.Value.Humanize()}.";
             DurationLabel.Text = TimeSpanUtils.ConvertDurationCompact(video.Duration);
 
-            WatchedButton.Text = $"Open video && mark as watched (wait {(_Countdown + 1)}s)";
-            DismissButton.Text = $"Dismiss notification (wait {(_Countdown + 1)}s)";
+            MarkButton.Text = $"Close & mark as: (wait {(_Countdown + 1)}s)";
+            OpenVideoCheckBox.Checked = SettingsManager.Configuration.NotificationOpenVideo;
+
+            OpenVideoStatusComboBox.Items.Add(Status.Unwatched);
+            OpenVideoStatusComboBox.Items.Add(Status.Watched);
+            OpenVideoStatusComboBox.Items.Add(Status.Dismissed);
+            OpenVideoStatusComboBox.Items.Add(Status.Ignored);
+            OpenVideoStatusComboBox.SelectedItem = SettingsManager.Configuration.NotificationDefaultVideoStatus;
 
             ControlBox = false;
         }
@@ -83,36 +89,28 @@ namespace VideoNotifications.Forms {
             EnableControlsCountdownTimer.Stop();
             EnableControlsTimer.Stop();
 
-            WatchedButton.Text = "Open video && mark as watched";
-            DismissButton.Text = "Dismiss notification";
-
-            WatchedButton.Enabled = true;
-            DismissButton.Enabled = true;
+            MarkButton.Text = "Close & mark as:";
+            OpenVideoCheckBox.Enabled = true;
+            OpenVideoStatusComboBox.Enabled = true;
+            MarkButton.Enabled = true;
         }
 
         private void EnableControlsCountdownTimer_Tick(object sender, EventArgs e) {
-            WatchedButton.Text = $"Open video && mark as watched (wait {_Countdown}s)";
-            DismissButton.Text = $"Dismiss notification (wait {_Countdown}s)";
+            MarkButton.Text = $"Close & mark as: (wait {_Countdown}s)";
 
             _Countdown--;
         }
 
-        private void VideoPictureBox_Click(object sender, EventArgs e) {
+        private void VideoPictureBox_Click(object sender, EventArgs e) { }
 
-        }
+        private void ChannelPictureBox_Click(object sender, EventArgs e) { }
 
-        private void ChannelPictureBox_Click(object sender, EventArgs e) {
+        private void OpenVideoCheckBox_CheckedChanged(object sender, EventArgs e) => SettingsManager.Configuration.NotificationOpenVideo = OpenVideoCheckBox.Checked;
 
-        }
+        private void MarkButton_Click(object sender, EventArgs e) {
+            Videos.SetStatus(_Video.VideoID, (Status)Enum.Parse(typeof(Status), OpenVideoStatusComboBox.SelectedItem.ToString()));
+            if (OpenVideoCheckBox.Checked) { ProcessUtils.Start(_Video.URL); }
 
-        private void WatchedButton_Click(object sender, EventArgs e) {
-            ProcessUtils.Start(_Video.URL);
-            Videos.SetStatus(_Video.VideoID, Status.Watched);
-            Close();
-        }
-
-        private void DismissButton_Click(object sender, EventArgs e) {
-            Videos.SetStatus(_Video.VideoID, Status.Dismissed);
             Close();
         }
 

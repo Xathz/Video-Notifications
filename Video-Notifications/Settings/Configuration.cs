@@ -7,26 +7,6 @@ namespace VideoNotifications.Settings {
     public class Configuration {
 
         /// <summary>
-        /// Main window location [X, Y] and size [Width, Height].
-        /// </summary>
-        public FormState MainWindow { get; set; } = new FormState();
-
-        /// <summary>
-        /// Notification window location [X, Y] and size [Width, Height].
-        /// </summary>
-        public FormState NotificationWindow { get; set; } = new FormState();
-
-        /// <summary>
-        /// Notification window location [X, Y] and size [Width, Height].
-        /// </summary>
-        public FormState AddChannelWindow { get; set; } = new FormState();
-
-        /// <summary>
-        /// Delete channel window location [X, Y] and size [Width, Height].
-        /// </summary>
-        public FormState DeleteChannelWindow { get; set; } = new FormState();
-
-        /// <summary>
         /// When minimized, hide the window.
         /// </summary>
         public bool MinimizeToTray { get; set; } = true;
@@ -53,6 +33,17 @@ namespace VideoNotifications.Settings {
         public string YouTubeAPIKey { get; set; } = string.Empty;
 
         /// <summary>
+        /// Open the video in the browser when you mark and close the notification.
+        /// </summary>
+        public bool NotificationOpenVideo { get; set; } = true;
+
+        /// <summary>
+        /// When a new video notification is shown, set the video status to this.
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Status NotificationDefaultVideoStatus { get; set; } = Status.Watched;
+
+        /// <summary>
         /// When a new channel is added, set the video status to this.
         /// This only applies to the first batch of videos that gets added to the database, when you add a new channel.
         /// </summary>
@@ -70,6 +61,26 @@ namespace VideoNotifications.Settings {
         /// from the database starting with the oldest each time the application is started.
         /// </summary>
         public int MaximumVideosToKeepPerChannel { get; set; } = 50;
+
+        /// <summary>
+        /// Main window location [X, Y] and size [Width, Height].
+        /// </summary>
+        public FormState MainWindow { get; set; } = new FormState();
+
+        /// <summary>
+        /// Notification window location [X, Y] and size [Width, Height].
+        /// </summary>
+        public FormState NotificationWindow { get; set; } = new FormState();
+
+        /// <summary>
+        /// Notification window location [X, Y] and size [Width, Height].
+        /// </summary>
+        public FormState AddChannelWindow { get; set; } = new FormState();
+
+        /// <summary>
+        /// Delete channel window location [X, Y] and size [Width, Height].
+        /// </summary>
+        public FormState DeleteChannelWindow { get; set; } = new FormState();
 
     }
 

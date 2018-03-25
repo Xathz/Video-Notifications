@@ -28,12 +28,13 @@
             this.ChannelPictureBox = new System.Windows.Forms.PictureBox();
             this.LinePanel = new System.Windows.Forms.Panel();
             this.ChannelLabel = new System.Windows.Forms.Label();
-            this.WatchedButton = new System.Windows.Forms.Button();
-            this.DismissButton = new System.Windows.Forms.Button();
+            this.MarkButton = new System.Windows.Forms.Button();
             this.DurationLabel = new System.Windows.Forms.Label();
             this.EnableControlsTimer = new System.Windows.Forms.Timer(this.components);
             this.EnableControlsCountdownTimer = new System.Windows.Forms.Timer(this.components);
             this.GeneralToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.OpenVideoStatusComboBox = new System.Windows.Forms.ComboBox();
+            this.OpenVideoCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.VideoPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChannelPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -82,29 +83,18 @@
             this.ChannelLabel.TabIndex = 19;
             this.ChannelLabel.Text = "Message";
             // 
-            // WatchedButton
+            // MarkButton
             // 
-            this.WatchedButton.Enabled = false;
-            this.WatchedButton.Location = new System.Drawing.Point(455, 101);
-            this.WatchedButton.Name = "WatchedButton";
-            this.WatchedButton.Size = new System.Drawing.Size(252, 23);
-            this.WatchedButton.TabIndex = 1;
-            this.WatchedButton.TabStop = false;
-            this.WatchedButton.Text = "Open video && mark as watched";
-            this.WatchedButton.UseVisualStyleBackColor = true;
-            this.WatchedButton.Click += new System.EventHandler(this.WatchedButton_Click);
-            // 
-            // DismissButton
-            // 
-            this.DismissButton.Enabled = false;
-            this.DismissButton.Location = new System.Drawing.Point(455, 130);
-            this.DismissButton.Name = "DismissButton";
-            this.DismissButton.Size = new System.Drawing.Size(252, 23);
-            this.DismissButton.TabIndex = 2;
-            this.DismissButton.TabStop = false;
-            this.DismissButton.Text = "Dismiss notification";
-            this.DismissButton.UseVisualStyleBackColor = true;
-            this.DismissButton.Click += new System.EventHandler(this.DismissButton_Click);
+            this.MarkButton.Enabled = false;
+            this.MarkButton.Location = new System.Drawing.Point(455, 126);
+            this.MarkButton.Name = "MarkButton";
+            this.MarkButton.Size = new System.Drawing.Size(146, 23);
+            this.MarkButton.TabIndex = 1;
+            this.MarkButton.TabStop = false;
+            this.MarkButton.Text = "Close & mark as:";
+            this.MarkButton.UseMnemonic = false;
+            this.MarkButton.UseVisualStyleBackColor = true;
+            this.MarkButton.Click += new System.EventHandler(this.MarkButton_Click);
             // 
             // DurationLabel
             // 
@@ -133,14 +123,39 @@
             // 
             this.GeneralToolTip.BackColor = System.Drawing.SystemColors.Control;
             // 
+            // OpenVideoStatusComboBox
+            // 
+            this.OpenVideoStatusComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.OpenVideoStatusComboBox.Enabled = false;
+            this.OpenVideoStatusComboBox.FormattingEnabled = true;
+            this.OpenVideoStatusComboBox.Location = new System.Drawing.Point(599, 127);
+            this.OpenVideoStatusComboBox.Name = "OpenVideoStatusComboBox";
+            this.OpenVideoStatusComboBox.Size = new System.Drawing.Size(108, 21);
+            this.OpenVideoStatusComboBox.TabIndex = 102;
+            // 
+            // OpenVideoCheckBox
+            // 
+            this.OpenVideoCheckBox.AutoSize = true;
+            this.OpenVideoCheckBox.BackColor = System.Drawing.Color.Transparent;
+            this.OpenVideoCheckBox.Enabled = false;
+            this.OpenVideoCheckBox.Location = new System.Drawing.Point(565, 104);
+            this.OpenVideoCheckBox.Name = "OpenVideoCheckBox";
+            this.OpenVideoCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.OpenVideoCheckBox.Size = new System.Drawing.Size(142, 17);
+            this.OpenVideoCheckBox.TabIndex = 103;
+            this.OpenVideoCheckBox.Text = "Open video after close";
+            this.OpenVideoCheckBox.UseVisualStyleBackColor = false;
+            this.OpenVideoCheckBox.CheckedChanged += new System.EventHandler(this.OpenVideoCheckBox_CheckedChanged);
+            // 
             // NotificationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(713, 160);
+            this.Controls.Add(this.OpenVideoCheckBox);
+            this.Controls.Add(this.OpenVideoStatusComboBox);
+            this.Controls.Add(this.MarkButton);
             this.Controls.Add(this.DurationLabel);
-            this.Controls.Add(this.DismissButton);
-            this.Controls.Add(this.WatchedButton);
             this.Controls.Add(this.ChannelLabel);
             this.Controls.Add(this.ChannelPictureBox);
             this.Controls.Add(this.VideoPictureBox);
@@ -160,6 +175,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.VideoPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChannelPictureBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -169,11 +185,12 @@
         private System.Windows.Forms.PictureBox ChannelPictureBox;
         private System.Windows.Forms.Panel LinePanel;
         private System.Windows.Forms.Label ChannelLabel;
-        private System.Windows.Forms.Button WatchedButton;
-        private System.Windows.Forms.Button DismissButton;
+        private System.Windows.Forms.Button MarkButton;
         private System.Windows.Forms.Label DurationLabel;
         private System.Windows.Forms.Timer EnableControlsTimer;
         private System.Windows.Forms.Timer EnableControlsCountdownTimer;
         private System.Windows.Forms.ToolTip GeneralToolTip;
+        private System.Windows.Forms.ComboBox OpenVideoStatusComboBox;
+        private System.Windows.Forms.CheckBox OpenVideoCheckBox;
     }
 }
