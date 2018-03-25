@@ -80,7 +80,7 @@ namespace VideoNotifications.Forms {
                         Files.StoreImage($"{newChannel.Info.ChannelID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(newChannel.Info.ThumbnailURL));
                         Files.StoreImage($"{newChannel.Info.ChannelID}-banner", NetworkUtils.DownloadFileToMemoryStream(newChannel.Info.BannerURL));
 
-                        List<YouTubeVideo> videos = newChannel.ChannelVideos.VideosInfoBulk.Videos;
+                        List<YouTubeVideo> videos = new ChannelVideos(newChannel.Info.ChannelID, 20).VideosInfoBulk.Videos;
                         foreach (YouTubeVideo video in videos) {
                             video.Status = SettingsManager.Configuration.NewChannelDefaultVideoStatus;
                             Videos.Insert(video);

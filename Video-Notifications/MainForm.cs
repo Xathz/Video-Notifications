@@ -126,9 +126,6 @@ namespace VideoNotifications {
                 DurationLabel.Text = TimeSpanUtils.ConvertDuration(selectedVideo.Duration);
 
                 VideoInfoPanel.Visible = true;
-
-                NotificationForm newNotification = new NotificationForm(selectedVideo);
-                newNotification.Show();
             } else {
                 VideosListViewChanged();
             }
