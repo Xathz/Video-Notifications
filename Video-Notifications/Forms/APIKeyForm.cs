@@ -37,6 +37,7 @@ namespace VideoNotifications.Forms {
 
         private void OKButton_Click(object sender, EventArgs e) {
             SettingsManager.Configuration.YouTubeAPIKey = APIKeyTextBox.Text.Trim();
+            SettingsManager.Save();
             Close();
         }
 

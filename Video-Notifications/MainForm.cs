@@ -55,6 +55,7 @@ namespace VideoNotifications {
             AddAllChannels();
 
             TrayNotifyIcon.Visible = true;
+            YouTubeCheckTimer.Start();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
@@ -152,7 +153,7 @@ namespace VideoNotifications {
             }
         }
 
-        private void WebsiteMenuItem_Click(object sender, EventArgs e) => ProcessUtils.Start("https://github.com/Xathz");
+        private void WebsiteMenuItem_Click(object sender, EventArgs e) => ProcessUtils.Start("https://github.com/Xathz/Video-Notifications");
 
         private void AddChannelMenuItem_Click(object sender, EventArgs e) {
             AddChannelForm newAddChannelForm = new AddChannelForm();

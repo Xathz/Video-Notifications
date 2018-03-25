@@ -369,7 +369,6 @@
             // 
             // YouTubeCheckTimer
             // 
-            this.YouTubeCheckTimer.Enabled = true;
             this.YouTubeCheckTimer.Interval = 1200000;
             this.YouTubeCheckTimer.Tick += new System.EventHandler(this.YouTubeCheckTimer_Tick);
             // 

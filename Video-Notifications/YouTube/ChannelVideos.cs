@@ -23,7 +23,7 @@ namespace VideoNotifications.YouTube {
         public VideoInfoBulk VideosInfoBulk { get; protected set; }
 
         /// <summary>
-        /// Get the 20 most recent videos from a channel.
+        /// Get the 10 most recent videos from a channel.
         /// </summary>
         /// <param name="channelID">ID of the channel to get videos for.</param>
         public ChannelVideos(string channelID) {
@@ -32,7 +32,8 @@ namespace VideoNotifications.YouTube {
                 SearchResource.ListRequest channelSearch = APIService.Search.List("id");
                 channelSearch.ChannelId = channelID;
                 channelSearch.Order = SearchResource.ListRequest.OrderEnum.Date;
-                channelSearch.MaxResults = 20;
+                channelSearch.SafeSearch = SearchResource.ListRequest.SafeSearchEnum.None;
+                channelSearch.MaxResults = 10;
                 channelSearch.PrettyPrint = false;
 
                 FullResponse = channelSearch.Execute();
