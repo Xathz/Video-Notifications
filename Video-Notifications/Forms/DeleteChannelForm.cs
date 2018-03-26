@@ -69,10 +69,10 @@ namespace VideoNotifications.Forms {
 
                         AddAllChannels();
                         FormsManager.StaticMainForm.AddAllChannels();
-                        LoggingManager.Log.Info($"Deleted channel: {channel.Title} ({channel.ChannelID})");
+                        LoggingManager.Log.Info($"Deleted channel: '{channel.Title}' ({channel.ChannelID}).");
                         MessageBox.Show($"{channel.Title} was deleted and {channelVideosTotal} videos were removed from the database.", "Channel Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     } catch (Exception ex) {
-                        LoggingManager.Log.Error(ex, $"Failed to delete a channel. Channel: {channel.Title} ({channel.ChannelID})");
+                        LoggingManager.Log.Error(ex, $"Failed to delete a channel. Channel: '{channel.Title}' ({channel.ChannelID}).");
                     }
                 }
             }

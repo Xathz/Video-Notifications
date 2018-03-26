@@ -88,11 +88,11 @@ namespace VideoNotifications.Forms {
                         }
 
                         FormsManager.StaticMainForm.AddAllChannels();
-                        LoggingManager.Log.Info($"Added channel: {newChannel.Info.Title} ({newChannel.Info.ChannelID})");
+                        LoggingManager.Log.Info($"Added channel: '{newChannel.Info.Title}' ({newChannel.Info.ChannelID}).");
                         EnableControls();
-                        MessageBox.Show($"{newChannel.Info.Title} was added along with {videos.Count} videos.", "Channel Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"'{newChannel.Info.Title}' was added along with {videos.Count} videos.", "Channel Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     } catch (Exception ex) {
-                        LoggingManager.Log.Error(ex, $"Failed to add a channel. Channel: {clickedChannel.Title} ({clickedChannel.ChannelID})");
+                        LoggingManager.Log.Error(ex, $"Failed to add a channel. Channel: '{clickedChannel.Title}' ({clickedChannel.ChannelID}).");
                         EnableControls();
                     }
                 }
