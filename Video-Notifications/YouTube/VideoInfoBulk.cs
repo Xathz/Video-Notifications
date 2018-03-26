@@ -50,6 +50,7 @@ namespace VideoNotifications.YouTube {
                     };
 
                     Videos.Add(videoInfo);
+                    LoggingManager.Log.Info($"Video information processed for '{videoInfo.Title}' ({videoInfo.VideoID}) by channel ({videoInfo.ChannelID}).");
                 }
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to get bulk video information for: {string.Join(",", videoIDs)}.");

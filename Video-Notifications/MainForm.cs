@@ -195,20 +195,20 @@ namespace VideoNotifications {
                     return;
                 }
 
+                List<string> videosToGetInfo = new List<string>();
                 foreach (YouTubeChannel channel in Channels.GetAll()) {
                     ChannelVideos channelVideos = new ChannelVideos(channel.ChannelID);
-                    List<string> videosToGetInfo = new List<string>();
                     foreach (string videoID in channelVideos.VideosIDs) {
                         if (!Videos.Exists(videoID)) {
                             videosToGetInfo.Add(videoID);
                         }
                     }
+                }
 
-                    VideoInfoBulk videoInfoBulk = new VideoInfoBulk(videosToGetInfo);
-                    foreach (YouTubeVideo video in videoInfoBulk.Videos) {
-                        Videos.Insert(video);
-                        Files.StoreImage($"{video.VideoID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(video.ThumbnailURL));
-                    }
+                VideoInfoBulk videoInfoBulk = new VideoInfoBulk(videosToGetInfo);
+                foreach (YouTubeVideo video in videoInfoBulk.Videos) {
+                    Videos.Insert(video);
+                    Files.StoreImage($"{video.VideoID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(video.ThumbnailURL));
                 }
 
                 e.Result = true;

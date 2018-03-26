@@ -44,6 +44,8 @@ namespace VideoNotifications.YouTube {
                     ThumbnailURL = GetBestThumbnail(video.Snippet.Thumbnails),
                     Status = Status.Unwatched
                 };
+
+                LoggingManager.Log.Info($"Video information processed for '{Info.Title}' ({Info.VideoID}) by channel ({Info.ChannelID}).");
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to get video information for: {videoID}.");
             }

@@ -42,6 +42,8 @@ namespace VideoNotifications.Database {
                 if (!_Channels.Exists(Query.EQ("$._id", channel.ChannelID))) {
                     _Channels.Insert(channel);
                 }
+
+                LoggingManager.Log.Info($"Channel '{channel.Title}' ({channel.ChannelID}) was inserted.");
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to insert channel: {channel.Title} ({channel.ChannelID}).");
             }
@@ -64,6 +66,8 @@ namespace VideoNotifications.Database {
         public static void Upsert(YouTubeChannel channel) {
             try {
                 _Channels.Upsert(channel);
+
+                LoggingManager.Log.Info($"Channel '{channel.Title}' ({channel.ChannelID}) was upsert'd.");
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to upsert a channel: {channel.Title} ({channel.ChannelID}).");
             }
@@ -86,6 +90,8 @@ namespace VideoNotifications.Database {
         public static void Delete(YouTubeChannel channel) {
             try {
                 _Channels.Delete(channel.ChannelID);
+
+                LoggingManager.Log.Info($"Channel '{channel.Title}' ({channel.ChannelID}) was deleted.");
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to delete channel: {channel.Title} ({channel.ChannelID}).");
             }

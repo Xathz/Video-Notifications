@@ -61,6 +61,8 @@ namespace VideoNotifications.Database {
             try {
                 if (!Exists(video.VideoID)) {
                     _Videos.Insert(video);
+
+                    LoggingManager.Log.Info($"Video '{video.Title}' ({video.VideoID}) was inserted.");
                 }
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to insert video: {video.Title} ({video.VideoID}).");
@@ -84,6 +86,8 @@ namespace VideoNotifications.Database {
         public static void Update(YouTubeVideo video) {
             try {
                 _Videos.Update(video);
+
+                LoggingManager.Log.Info($"Video '{video.Title}' ({video.VideoID}) was updated.");
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to update video: {video.Title} ({video.VideoID}).");
             }
@@ -106,6 +110,8 @@ namespace VideoNotifications.Database {
         public static void Delete(YouTubeVideo video) {
             try {
                 _Videos.Delete(video.VideoID);
+
+                LoggingManager.Log.Info($"Video '{video.Title}' ({video.VideoID}) was deleted.");
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to delete video: {video.Title} ({video.VideoID}).");
             }
@@ -132,6 +138,8 @@ namespace VideoNotifications.Database {
                 if (video != null) {
                     video.Status = status;
                     Update(video);
+
+                    LoggingManager.Log.Info($"Status was changed for video ({videoID}).");
                 }
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to set status for ({videoID}).");

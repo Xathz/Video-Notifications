@@ -44,6 +44,7 @@ namespace VideoNotifications.YouTube {
                 }
 
                 VideosInfoBulk = new VideoInfoBulk(VideosIDs);
+                LoggingManager.Log.Info($"Channel videos retrieved for ({channelID}), {FullResponse.Items.Count} videoIDs were retrieved.");
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to get channel videos for: {channelID}.");
             }

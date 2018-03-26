@@ -48,6 +48,7 @@ namespace VideoNotifications.YouTube {
                         };
 
                         Channels.Add(channelInfo);
+                        LoggingManager.Log.Info($"Channel information processed for '{channelInfo.Title}' ({channelInfo.ChannelID}).");
                     }
                 }
             } catch (Exception ex) {

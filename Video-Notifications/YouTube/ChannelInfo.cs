@@ -51,6 +51,8 @@ namespace VideoNotifications.YouTube {
                     BannerURL = channel.BrandingSettings.Image.BannerMobileExtraHdImageUrl,
                     ThumbnailURL = GetBestThumbnail(channel.Snippet.Thumbnails)
                 };
+
+                LoggingManager.Log.Info($"Channel information processed for '{Info.Title}' ({Info.ChannelID}).");
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to get channel information for: {channelID}.");
             }

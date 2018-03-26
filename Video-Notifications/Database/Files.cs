@@ -20,6 +20,8 @@ namespace VideoNotifications.Database {
                 if (!_Database.FileStorage.Exists(imageID)) {
                     if (stream != null) {
                         _Database.FileStorage.Upload(imageID, $"{imageID}.jpg", stream);
+
+                        LoggingManager.Log.Info($"Image ({imageID}) was stored.");
                     }
                 }
             } catch (Exception ex) {
@@ -69,11 +71,15 @@ namespace VideoNotifications.Database {
         public static void DeleteImage(string imageID) {
             try {
                 if (_Database.FileStorage.Exists($"{imageID}-thumbnail")) { _Database.FileStorage.Delete($"{imageID}-thumbnail"); }
+
+                LoggingManager.Log.Info($"Image ({imageID}-thumbnail) was deleted.");
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to delete image: {imageID}-thumbnail.");
             }
             try {
                 if (_Database.FileStorage.Exists($"{imageID}-banner")) { _Database.FileStorage.Delete($"{imageID}-banner"); }
+
+                LoggingManager.Log.Info($"Image ({imageID}-banner) was deleted.");
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to delete image: {imageID}-banner.");
             }
