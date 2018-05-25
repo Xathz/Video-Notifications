@@ -5,3 +5,4 @@ Displays a notification when a channel posted a new video.
 
 ## Notes
 - You do not sign into this with your YouTube account, it uses an API key.
+- Requires Visual Studio 2017 to build.
