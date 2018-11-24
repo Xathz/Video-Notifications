@@ -167,6 +167,8 @@ namespace VideoNotifications {
             newDeleteChannelForm.Show();
         }
 
+        private void ForceCheckMenuItem_Click(object sender, EventArgs e) => YouTubeCheckWorker.RunWorkerAsync();
+
         private void PauseNotificationsMenuItem_CheckedChanged(object sender, EventArgs e) => SettingsManager.Configuration.PauseNotifications = PauseNotificationsMenuItem.Checked;
 
         private void MinimizeToTrayMenuItem_CheckedChanged(object sender, EventArgs e) {

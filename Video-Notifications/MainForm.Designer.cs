@@ -48,6 +48,7 @@
             this.ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.AddChannelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DeleteChannelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ForceCheckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.PauseNotificationsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MinimizeToTrayMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -287,6 +288,7 @@
             this.ToolStripSeparator1,
             this.AddChannelMenuItem,
             this.DeleteChannelMenuItem,
+            this.ForceCheckMenuItem,
             this.ToolStripSeparator2,
             this.PauseNotificationsMenuItem,
             this.MinimizeToTrayMenuItem,
@@ -294,26 +296,26 @@
             this.ToolStripSeparator3,
             this.ExitMenuItem});
             this.TrayContextMenuStrip.Name = "TrayContextMenuStrip";
-            this.TrayContextMenuStrip.Size = new System.Drawing.Size(175, 176);
+            this.TrayContextMenuStrip.Size = new System.Drawing.Size(218, 198);
             // 
             // WebsiteMenuItem
             // 
             this.WebsiteMenuItem.Image = global::VideoNotifications.Properties.Resources.Website;
             this.WebsiteMenuItem.Name = "WebsiteMenuItem";
-            this.WebsiteMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.WebsiteMenuItem.Size = new System.Drawing.Size(217, 22);
             this.WebsiteMenuItem.Text = "Website";
             this.WebsiteMenuItem.Click += new System.EventHandler(this.WebsiteMenuItem_Click);
             // 
             // ToolStripSeparator1
             // 
             this.ToolStripSeparator1.Name = "ToolStripSeparator1";
-            this.ToolStripSeparator1.Size = new System.Drawing.Size(171, 6);
+            this.ToolStripSeparator1.Size = new System.Drawing.Size(214, 6);
             // 
             // AddChannelMenuItem
             // 
             this.AddChannelMenuItem.Image = global::VideoNotifications.Properties.Resources.Add;
             this.AddChannelMenuItem.Name = "AddChannelMenuItem";
-            this.AddChannelMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.AddChannelMenuItem.Size = new System.Drawing.Size(217, 22);
             this.AddChannelMenuItem.Text = "Add channel";
             this.AddChannelMenuItem.Click += new System.EventHandler(this.AddChannelMenuItem_Click);
             // 
@@ -321,20 +323,28 @@
             // 
             this.DeleteChannelMenuItem.Image = global::VideoNotifications.Properties.Resources.Delete;
             this.DeleteChannelMenuItem.Name = "DeleteChannelMenuItem";
-            this.DeleteChannelMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.DeleteChannelMenuItem.Size = new System.Drawing.Size(217, 22);
             this.DeleteChannelMenuItem.Text = "Delete channel";
             this.DeleteChannelMenuItem.Click += new System.EventHandler(this.DeleteChannelMenuItem_Click);
+            // 
+            // ForceCheckMenuItem
+            // 
+            this.ForceCheckMenuItem.Image = global::VideoNotifications.Properties.Resources.Refresh;
+            this.ForceCheckMenuItem.Name = "ForceCheckMenuItem";
+            this.ForceCheckMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.ForceCheckMenuItem.Text = "Force check for new videos";
+            this.ForceCheckMenuItem.Click += new System.EventHandler(this.ForceCheckMenuItem_Click);
             // 
             // ToolStripSeparator2
             // 
             this.ToolStripSeparator2.Name = "ToolStripSeparator2";
-            this.ToolStripSeparator2.Size = new System.Drawing.Size(171, 6);
+            this.ToolStripSeparator2.Size = new System.Drawing.Size(214, 6);
             // 
             // PauseNotificationsMenuItem
             // 
             this.PauseNotificationsMenuItem.CheckOnClick = true;
             this.PauseNotificationsMenuItem.Name = "PauseNotificationsMenuItem";
-            this.PauseNotificationsMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.PauseNotificationsMenuItem.Size = new System.Drawing.Size(217, 22);
             this.PauseNotificationsMenuItem.Text = "Pause notifications";
             this.PauseNotificationsMenuItem.CheckedChanged += new System.EventHandler(this.PauseNotificationsMenuItem_CheckedChanged);
             // 
@@ -342,7 +352,7 @@
             // 
             this.MinimizeToTrayMenuItem.CheckOnClick = true;
             this.MinimizeToTrayMenuItem.Name = "MinimizeToTrayMenuItem";
-            this.MinimizeToTrayMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.MinimizeToTrayMenuItem.Size = new System.Drawing.Size(217, 22);
             this.MinimizeToTrayMenuItem.Text = "Minimize to tray";
             this.MinimizeToTrayMenuItem.CheckedChanged += new System.EventHandler(this.MinimizeToTrayMenuItem_CheckedChanged);
             // 
@@ -350,20 +360,20 @@
             // 
             this.LightIconMenuItem.CheckOnClick = true;
             this.LightIconMenuItem.Name = "LightIconMenuItem";
-            this.LightIconMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.LightIconMenuItem.Size = new System.Drawing.Size(217, 22);
             this.LightIconMenuItem.Text = "Use light icon";
             this.LightIconMenuItem.CheckedChanged += new System.EventHandler(this.LightIconMenuItem_CheckedChanged);
             // 
             // ToolStripSeparator3
             // 
             this.ToolStripSeparator3.Name = "ToolStripSeparator3";
-            this.ToolStripSeparator3.Size = new System.Drawing.Size(171, 6);
+            this.ToolStripSeparator3.Size = new System.Drawing.Size(214, 6);
             // 
             // ExitMenuItem
             // 
             this.ExitMenuItem.Image = global::VideoNotifications.Properties.Resources.Close;
             this.ExitMenuItem.Name = "ExitMenuItem";
-            this.ExitMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.ExitMenuItem.Size = new System.Drawing.Size(217, 22);
             this.ExitMenuItem.Text = "Exit";
             this.ExitMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
             // 
@@ -491,6 +501,7 @@
         private System.Windows.Forms.ToolStripMenuItem AddChannelMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DeleteChannelMenuItem;
         private System.Windows.Forms.ToolStripSeparator ToolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem ForceCheckMenuItem;
     }
 }
 

@@ -277,6 +277,7 @@
     <None Include="art\Window.png" />
     <None Include="art\Add.png" />
     <None Include="art\Delete.png" />
+    <None Include="art\Refresh.png" />
     <Content Include="FodyWeavers.xml" />
     <None Include="Resources\VideoNotificationsLightPNG.png" />
     <None Include="Resources\VideoNotificationsLightIcon.ico" />
