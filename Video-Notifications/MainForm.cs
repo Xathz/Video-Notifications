@@ -4,12 +4,10 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using VideoNotifications.Database;
 using VideoNotifications.Database.CollectionType;
 using VideoNotifications.Forms;
 using VideoNotifications.Settings;
 using VideoNotifications.Utilities;
-using VideoNotifications.YouTube;
 
 namespace VideoNotifications {
 
@@ -97,7 +95,7 @@ namespace VideoNotifications {
             if (ChannelsListView.SelectedItems.Count == 1) {
                 YouTubeChannel selectedChannel = (YouTubeChannel)ChannelsListView.SelectedItems[0].Tag;
 
-                Image imageFaded = ImageUtils.SetImageOpacity(Files.GetThumbnail(selectedChannel.ChannelID), 0.16f);
+                Image imageFaded = ImageUtils.SetImageOpacity(Database.Files.GetThumbnail(selectedChannel.ChannelID), 0.16f);
                 BackgroundImageLayout = (imageFaded.Size.Height < Size.Height) ? ImageLayout.Stretch : ImageLayout.Center;
                 BackgroundImage = imageFaded;
 
@@ -114,7 +112,7 @@ namespace VideoNotifications {
                 YouTubeVideo selectedVideo = (YouTubeVideo)VideosListView.SelectedItems[0].Tag;
                 string openVideoTip = $"Open video in browser.{Environment.NewLine}{selectedVideo.URL}";
 
-                VideoPictureBox.Image = Files.GetThumbnail(selectedVideo.VideoID);
+                VideoPictureBox.Image = Database.Files.GetThumbnail(selectedVideo.VideoID);
                 VideoPictureBox.Visible = true;
                 GeneralToolTip.SetToolTip(VideoPictureBox, openVideoTip);
                 VideoDescriptionLabel.Text = StringUtils.FormatVideoDescription(selectedVideo.Description);
@@ -198,19 +196,19 @@ namespace VideoNotifications {
                 }
 
                 List<string> videosToGetInfo = new List<string>();
-                foreach (YouTubeChannel channel in Channels.GetAll()) {
-                    ChannelVideos channelVideos = new ChannelVideos(channel.ChannelID);
+                foreach (YouTubeChannel channel in Database.Channels.GetAll()) {
+                    YouTube.ChannelVideos channelVideos = new YouTube.ChannelVideos(channel.ChannelID, true);
                     foreach (string videoID in channelVideos.VideosIDs) {
-                        if (!Videos.Exists(videoID)) {
+                        if (!Database.Videos.Exists(videoID)) {
                             videosToGetInfo.Add(videoID);
                         }
                     }
                 }
 
-                VideoInfoBulk videoInfoBulk = new VideoInfoBulk(videosToGetInfo);
+                YouTube.VideoInfoBulk videoInfoBulk = new YouTube.VideoInfoBulk(videosToGetInfo);
                 foreach (YouTubeVideo video in videoInfoBulk.Videos) {
-                    Videos.Insert(video);
-                    Files.StoreImage($"{video.VideoID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(video.ThumbnailURL));
+                    Database.Videos.Insert(video);
+                    Database.Files.StoreImage($"{video.VideoID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(video.ThumbnailURL));
                 }
 
                 e.Result = true;
@@ -222,7 +220,7 @@ namespace VideoNotifications {
 
         private void YouTubeCheckWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
             if (SettingsManager.Configuration.PauseNotifications) { return; }
-            IEnumerable<YouTubeVideo> unwatchedVideos = Videos.GetAllUnwatched();
+            IEnumerable<YouTubeVideo> unwatchedVideos = Database.Videos.GetAllUnwatched();
 
             if (unwatchedVideos.Count() > 0) {
                 if ((bool)e.Result == false) {

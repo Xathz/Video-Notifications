@@ -23,7 +23,7 @@ namespace VideoNotifications.YouTube {
         /// </summary>
         public ChannelVideos ChannelVideos {
             get {
-                _ChannelVideos = _ChannelVideos ?? new ChannelVideos(Info.ChannelID);
+                _ChannelVideos = _ChannelVideos ?? new ChannelVideos(Info.ChannelID, false);
                 return _ChannelVideos;
             }
         }
