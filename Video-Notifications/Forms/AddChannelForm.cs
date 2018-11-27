@@ -54,7 +54,7 @@ namespace VideoNotifications.Forms {
             DisableControls("Searching...", true);
 
             YouTube.Channel channelSearch = new YouTube.Channel();
-            foreach (Database.CollectionType.YouTubeChannel channel in channelSearch.Search(SearchTextBox.Text)) {
+            foreach (Database.Types.Channel channel in channelSearch.Search(SearchTextBox.Text)) {
                 AddChannelToListView(channel);
             }
 
@@ -64,9 +64,9 @@ namespace VideoNotifications.Forms {
         private void ChannelsListView_MouseDoubleClick(object sender, MouseEventArgs e) {
             ListViewItem clickedItem = ChannelsListView.GetItemAt(e.X, e.Y);
             if (clickedItem != null) {
-                Database.CollectionType.YouTubeChannel clickedChannel = (Database.CollectionType.YouTubeChannel)clickedItem.Tag;
-                if (Database.Channels.Exists(clickedChannel.ChannelID)) {
-                    MessageBox.Show($"{clickedChannel.Title} ({clickedChannel.ChannelID}) already exists.", "Channel Exists", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                Database.Types.Channel clickedChannel = (Database.Types.Channel)clickedItem.Tag;
+                if (Database.Channels.Exists(clickedChannel.ID)) {
+                    MessageBox.Show($"{clickedChannel.Title} ({clickedChannel.ID}) already exists.", "Channel Exists", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     return;
                 }
 
@@ -74,25 +74,25 @@ namespace VideoNotifications.Forms {
                     try {
                         DisableControls("Processing...", false);
 
-                        Database.CollectionType.YouTubeChannel channel = new YouTube.Channel().Info(clickedChannel.ChannelID);
+                        Database.Types.Channel channel = new YouTube.Channel().Info(clickedChannel.ID);
                         Database.Channels.Upsert(channel);
 
-                        Database.Files.StoreImage($"{channel.ChannelID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(channel.ThumbnailURL));
-                        Database.Files.StoreImage($"{channel.ChannelID}-banner", NetworkUtils.DownloadFileToMemoryStream(channel.BannerURL));
+                        Database.Files.StoreImage($"{channel.ID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(channel.ThumbnailURL));
+                        Database.Files.StoreImage($"{channel.ID}-banner", NetworkUtils.DownloadFileToMemoryStream(channel.BannerURL));
 
-                        List<Database.CollectionType.YouTubeVideo> videos = new YouTube.Channel().RecentVideos(channel.ChannelID);
-                        foreach (Database.CollectionType.YouTubeVideo video in videos) {
-                            video.Status = SettingsManager.Configuration.NewChannelDefaultVideoStatus;
+                        List<Database.Types.Video> videos = new YouTube.Channel().RecentVideos(channel.ID);
+                        foreach (Database.Types.Video video in videos) {
+                            video.WatchStatus = SettingsManager.Configuration.NewChannelDefaultVideoStatus;
                             Database.Videos.Insert(video);
-                            Database.Files.StoreImage($"{video.VideoID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(video.ThumbnailURL));
+                            Database.Files.StoreImage($"{video.ID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(video.ThumbnailURL));
                         }
 
                         FormsManager.StaticMainForm.AddAllChannels();
-                        LoggingManager.Log.Info($"Added channel: '{channel.Title}' ({channel.ChannelID}).");
+                        LoggingManager.Log.Info($"Added channel: '{channel.Title}' ({channel.ID}).");
                         EnableControls();
                         MessageBox.Show($"'{channel.Title}' was added along with {videos.Count} videos.", "Channel Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     } catch (Exception ex) {
-                        LoggingManager.Log.Error(ex, $"Failed to add a channel. Channel: '{clickedChannel.Title}' ({clickedChannel.ChannelID}).");
+                        LoggingManager.Log.Error(ex, $"Failed to add a channel. Channel: '{clickedChannel.Title}' ({clickedChannel.ID}).");
                         EnableControls();
                     }
                 }
@@ -103,18 +103,18 @@ namespace VideoNotifications.Forms {
         /// Add a single channel to <see cref="ChannelsListView"/>.
         /// </summary>
         /// <param name="channel">Channel to add.</param>
-        private void AddChannelToListView(Database.CollectionType.YouTubeChannel channel) {
-            if (!ChannelsImageList.Images.ContainsKey(channel.ChannelID)) {
+        private void AddChannelToListView(Database.Types.Channel channel) {
+            if (!ChannelsImageList.Images.ContainsKey(channel.ID)) {
                 MemoryStream stream = NetworkUtils.DownloadFileToMemoryStream(channel.ThumbnailURL);
                 Image image = Image.FromStream(stream);
                 Image resizedImage = ImageUtils.ResizeImage(image, 24, 24);
-                ChannelsImageList.Images.Add(channel.ChannelID, resizedImage);
+                ChannelsImageList.Images.Add(channel.ID, resizedImage);
             }
 
             ListViewItem channelItem = new ListViewItem {
-                Name = channel.ChannelID,
+                Name = channel.ID,
                 Tag = channel,
-                ImageKey = channel.ChannelID,
+                ImageKey = channel.ID,
                 Font = new Font("Segoe UI Semibold", 10),
                 Text = $" {channel.Title}"
             };

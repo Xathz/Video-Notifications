@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LiteDB;
-using VideoNotifications.Database.CollectionType;
+using VideoNotifications.Database.Types;
 
 namespace VideoNotifications.Database {
 
@@ -13,19 +13,19 @@ namespace VideoNotifications.Database {
         /// <summary>
         /// Get all the channels in the database.
         /// </summary>
-        public static IEnumerable<YouTubeChannel> GetAll() => _Channels.FindAll();
+        public static IEnumerable<Channel> GetAll() => _Channels.FindAll();
 
         /// <summary>
         /// Get a channel by ID.
         /// </summary>
         /// <param name="channelID">Channel ID to lookup.</param>
-        public static YouTubeChannel GetByID(string channelID) => _Channels.FindById(channelID);
+        public static Channel GetByID(string channelID) => _Channels.FindById(channelID);
 
         /// <summary>
         /// Get all videos by a channel.
         /// </summary>
         /// <param name="channelID">Channel to get videos for.</param>
-        public static IEnumerable<YouTubeVideo> GetAllVideos(string channelID) => _Videos.Find(c => c.ChannelID == channelID);
+        public static IEnumerable<Video> GetAllVideos(string channelID) => _Videos.Find(c => c.ChannelID == channelID);
 
         /// <summary>
         /// Check if a channel exists.
@@ -37,15 +37,15 @@ namespace VideoNotifications.Database {
         /// Insert a channel.
         /// </summary>
         /// <param name="channel">Channel to insert.</param>
-        public static void Insert(YouTubeChannel channel) {
+        public static void Insert(Channel channel) {
             try {
-                if (!_Channels.Exists(Query.EQ("$._id", channel.ChannelID))) {
+                if (!_Channels.Exists(Query.EQ("$._id", channel.ID))) {
                     _Channels.Insert(channel);
                 }
 
-                LoggingManager.Log.Info($"Channel '{channel.Title}' ({channel.ChannelID}) was inserted.");
+                LoggingManager.Log.Info($"'{channel.ID}' was inserted.");
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to insert channel: {channel.Title} ({channel.ChannelID}).");
+                LoggingManager.Log.Error(ex, $"Failed to insert '{channel.ID}'.");
             }
         }
 
@@ -53,8 +53,8 @@ namespace VideoNotifications.Database {
         /// Insert a collection of channels.
         /// </summary>
         /// <param name="channels">Collection of channels to insert.</param>
-        public static void Insert(IEnumerable<YouTubeChannel> channels) {
-            foreach (YouTubeChannel channel in channels) {
+        public static void Insert(IEnumerable<Channel> channels) {
+            foreach (Channel channel in channels) {
                 Insert(channel);
             }
         }
@@ -63,13 +63,13 @@ namespace VideoNotifications.Database {
         /// Update or insert a channel.
         /// </summary>
         /// <param name="channel">Channel to update or insert.</param>
-        public static void Upsert(YouTubeChannel channel) {
+        public static void Upsert(Channel channel) {
             try {
                 _Channels.Upsert(channel);
 
-                LoggingManager.Log.Info($"Channel '{channel.Title}' ({channel.ChannelID}) was upsert'd.");
+                LoggingManager.Log.Info($"'{channel.ID}' was upsert'd.");
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to upsert a channel: {channel.Title} ({channel.ChannelID}).");
+                LoggingManager.Log.Error(ex, $"Failed to upsert '{channel.ID}'.");
             }
         }
 
@@ -77,8 +77,8 @@ namespace VideoNotifications.Database {
         /// Update or insert a collection of channels.
         /// </summary>
         /// <param name="channels">Collection of channels to update or insert.</param>
-        public static void Upsert(IEnumerable<YouTubeChannel> channels) {
-            foreach (YouTubeChannel channel in channels) {
+        public static void Upsert(IEnumerable<Channel> channels) {
+            foreach (Channel channel in channels) {
                 Upsert(channel);
             }
         }
@@ -87,13 +87,13 @@ namespace VideoNotifications.Database {
         /// Delete a channel.
         /// </summary>
         /// <param name="channel">Channel to delete.</param>
-        public static void Delete(YouTubeChannel channel) {
+        public static void Delete(Channel channel) {
             try {
-                _Channels.Delete(channel.ChannelID);
+                _Channels.Delete(channel.ID);
 
-                LoggingManager.Log.Info($"Channel '{channel.Title}' ({channel.ChannelID}) was deleted.");
+                LoggingManager.Log.Info($"'{channel.ID}' was deleted.");
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to delete channel: {channel.Title} ({channel.ChannelID}).");
+                LoggingManager.Log.Error(ex, $"Failed to delete '{channel.ID}'.");
             }
         }
 
@@ -101,8 +101,8 @@ namespace VideoNotifications.Database {
         /// Delete a collection of channels.
         /// </summary>
         /// <param name="channels">Collection of channels to delete.</param>
-        public static void Delete(IEnumerable<YouTubeChannel> channels) {
-            foreach (YouTubeChannel channel in channels) {
+        public static void Delete(IEnumerable<Channel> channels) {
+            foreach (Channel channel in channels) {
                 Delete(channel);
             }
         }

@@ -23,7 +23,7 @@ namespace VideoNotifications {
             VideosListView.Items.Clear();
 
             ChannelsListViewChanged();
-            foreach (Database.CollectionType.YouTubeChannel channel in Database.Channels.GetAll()) {
+            foreach (Database.Types.Channel channel in Database.Channels.GetAll()) {
                 AddChannelToListView(channel);
             }
 
@@ -40,8 +40,8 @@ namespace VideoNotifications {
             VideosListView.BeginUpdate();
             VideosListView.Items.Clear();
 
-            IEnumerable<Database.CollectionType.YouTubeVideo> videos = Database.Channels.GetAllVideos(channelID).OrderByDescending(v => v.Posted);
-            foreach (Database.CollectionType.YouTubeVideo video in videos) {
+            IEnumerable<Database.Types.Video> videos = Database.Channels.GetAllVideos(channelID).OrderByDescending(v => v.Posted);
+            foreach (Database.Types.Video video in videos) {
                 AddVideoToListView(video);
             }
 
@@ -53,16 +53,16 @@ namespace VideoNotifications {
         /// Add a single channel to <see cref="ChannelsListView"/>.
         /// </summary>
         /// <param name="channel">Channel to add.</param>
-        private void AddChannelToListView(Database.CollectionType.YouTubeChannel channel) {
-            if (!ChannelsImageList.Images.ContainsKey(channel.ChannelID)) {
-                Image resizedImage = ImageUtils.ResizeImage(Database.Files.GetThumbnail(channel.ChannelID), 24, 24);
-                ChannelsImageList.Images.Add(channel.ChannelID, resizedImage);
+        private void AddChannelToListView(Database.Types.Channel channel) {
+            if (!ChannelsImageList.Images.ContainsKey(channel.ID)) {
+                Image resizedImage = ImageUtils.ResizeImage(Database.Files.GetThumbnail(channel.ID), 24, 24);
+                ChannelsImageList.Images.Add(channel.ID, resizedImage);
             }
 
             ListViewItem channelItem = new ListViewItem {
-                Name = channel.ChannelID,
+                Name = channel.ID,
                 Tag = channel,
-                ImageKey = channel.ChannelID,
+                ImageKey = channel.ID,
                 Font = new Font("Segoe UI Semibold", 10),
                 Text = $" {channel.Title}"
             };
@@ -74,12 +74,12 @@ namespace VideoNotifications {
         /// Add a single video to <see cref="VideosListView"/>.
         /// </summary>
         /// <param name="video">Video to add.</param>
-        private void AddVideoToListView(Database.CollectionType.YouTubeVideo video) {
+        private void AddVideoToListView(Database.Types.Video video) {
             ListViewItem videoItem = new ListViewItem {
-                Name = video.VideoID,
+                Name = video.ID,
                 Tag = video,
                 Text = $"{video.Title}",
-                BackColor = DisplayStatusColor(video.Status)
+                BackColor = DisplayStatusColor(video.WatchStatus)
             };
 
             ListViewItem.ListViewSubItem postedDateItem = new ListViewItem.ListViewSubItem {
@@ -94,14 +94,14 @@ namespace VideoNotifications {
         /// Updates a video in <see cref="VideosListView"/> from <see cref="Videos"/> data.
         /// </summary>
         /// <param name="video">Video to update.</param>
-        private void UpdateVideoInListView(Database.CollectionType.YouTubeVideo video) {
-            ListViewItem item = VideosListView.Items.Find(video.VideoID, false).FirstOrDefault();
+        private void UpdateVideoInListView(Database.Types.Video video) {
+            ListViewItem item = VideosListView.Items.Find(video.ID, false).FirstOrDefault();
             if (item != null) {
-                Database.CollectionType.YouTubeVideo updatedVideo = Database.Videos.GetByID(video.VideoID);
-                item.Name = updatedVideo.VideoID;
+                Database.Types.Video updatedVideo = Database.Videos.GetByID(video.ID);
+                item.Name = updatedVideo.ID;
                 item.Tag = updatedVideo;
                 item.Text = updatedVideo.Title;
-                item.BackColor = DisplayStatusColor(updatedVideo.Status);
+                item.BackColor = DisplayStatusColor(updatedVideo.WatchStatus);
                 item.SubItems[1].Text = updatedVideo.Posted.Value.ToUniversalTime().Humanize();
             }
         }
@@ -110,14 +110,14 @@ namespace VideoNotifications {
         /// Set the selected or all video(s) status.
         /// </summary>
         /// <param name="status">Status to set the video to.</param>
-        private void SetStatus(Database.CollectionType.Status status) {
+        private void SetStatus(Database.Types.WatchStatus status) {
             if (ModifierKeys == Keys.Shift) {
                 if (MessageBox.Show($"Really mark all videos as {status.ToString()}?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
                     VideosListView.BeginUpdate();
                     foreach (ListViewItem item in VideosListView.Items) {
-                        if (((Database.CollectionType.YouTubeVideo)item.Tag).Status != status) {
+                        if (((Database.Types.Video)item.Tag).WatchStatus != status) {
                             Database.Videos.SetStatus(item.Name, status);
-                            UpdateVideoInListView((Database.CollectionType.YouTubeVideo)item.Tag);
+                            UpdateVideoInListView((Database.Types.Video)item.Tag);
                         }
                     }
                     VideosListView.EndUpdate();
@@ -126,7 +126,7 @@ namespace VideoNotifications {
                 if (VideosListView.SelectedItems.Count == 1) {
                     ListViewItem selectedItem = VideosListView.SelectedItems[0];
                     Database.Videos.SetStatus(selectedItem.Name, status);
-                    UpdateVideoInListView((Database.CollectionType.YouTubeVideo)selectedItem.Tag);
+                    UpdateVideoInListView((Database.Types.Video)selectedItem.Tag);
                 }
             }
         }
@@ -135,15 +135,15 @@ namespace VideoNotifications {
         /// The color based on the video <see cref="Status"/>. Value will be a <see cref="Color"/> or <see cref="SystemColors"/> type.
         /// </summary>
         /// <param name="status">Status to get the color for.</param>
-        private dynamic DisplayStatusColor(Database.CollectionType.Status status) {
+        private dynamic DisplayStatusColor(Database.Types.WatchStatus status) {
             switch (status) {
-                case Database.CollectionType.Status.Watched:
+                case Database.Types.WatchStatus.Watched:
                     return Color.LightGreen;
-                case Database.CollectionType.Status.Unwatched:
+                case Database.Types.WatchStatus.Unwatched:
                     return SystemColors.Window;
-                case Database.CollectionType.Status.Dismissed:
+                case Database.Types.WatchStatus.Dismissed:
                     return Color.LemonChiffon;
-                case Database.CollectionType.Status.Ignored:
+                case Database.Types.WatchStatus.Ignored:
                     return Color.Gainsboro;
                 default:
                     return SystemColors.Window;

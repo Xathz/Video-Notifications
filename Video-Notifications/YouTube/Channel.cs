@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-//using VideoNotifications.Database.CollectionType;
 using API = Google.Apis.YouTube.v3;
 
 namespace VideoNotifications.YouTube {
@@ -13,7 +12,7 @@ namespace VideoNotifications.YouTube {
         /// </summary>
         /// <param name="channelID">ID of the channel to get information for</param>
         /// <returns>Information about a channel.</returns>
-        public Database.CollectionType.YouTubeChannel Info(string channelID) {
+        public Database.Types.Channel Info(string channelID) {
             try {
                 // https://developers.google.com/youtube/v3/docs/channels/list
                 API.ChannelsResource.ListRequest channelInfo = APIService.Channels.List("id,snippet,brandingSettings");
@@ -23,8 +22,8 @@ namespace VideoNotifications.YouTube {
 
                 API.Data.Channel response = channelInfo.Execute().Items[0];
 
-                Database.CollectionType.YouTubeChannel channel = new Database.CollectionType.YouTubeChannel {
-                    ChannelID = response.Id,
+                Database.Types.Channel channel = new Database.Types.Channel {
+                    ID = response.Id,
                     Title = response.Snippet.Title,
                     Description = response.Snippet.Description,
                     URL = $"https://www.youtube.com/channel/{response.Id}",
@@ -32,12 +31,10 @@ namespace VideoNotifications.YouTube {
                     ThumbnailURL = GetBestThumbnail(response.Snippet.Thumbnails)
                 };
 
-                LoggingManager.Log.Info($"Channel information processed for '{channel.Title}' ({channel.ChannelID}).");
-
+                LoggingManager.Log.Info($"Information processed for '{channel.ID}'.");
                 return channel;
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to get channel information for: {channelID}.");
-
+                LoggingManager.Log.Error(ex, $"Failed to get information for '{channelID}'.");
                 return null;
             }
         }
@@ -46,18 +43,14 @@ namespace VideoNotifications.YouTube {
         /// Get the specified most recent videos from a channel.
         /// </summary>
         /// <param name="channelID">ID of the channel to get videos for.</param>
-        public List<Database.CollectionType.YouTubeVideo> RecentVideos(string channelID) {
+        public List<Database.Types.Video> RecentVideos(string channelID) {
             try {
-                List<string> response = RecentVideoIDs(channelID);
+                List<Database.Types.Video> videos = new Videos().Bulk(RecentVideoIDs(channelID));
 
-                List <Database.CollectionType.YouTubeVideo> videos = new Videos().Bulk(response);
-
-                LoggingManager.Log.Info($"Channel videos retrieved for ({channelID}), {response.Count} videoIDs were retrieved.");
-
+                LoggingManager.Log.Info($"Videos retrieved for '{channelID}' with {videos.Count} results.");
                 return videos;
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to get channel videos for: {channelID}.");
-
+                LoggingManager.Log.Error(ex, $"Failed to get videos for '{channelID}'.");
                 return null;
             }
         }
@@ -76,22 +69,12 @@ namespace VideoNotifications.YouTube {
                 channelSearch.MaxResults = 20;
                 channelSearch.PrettyPrint = false;
 
-                API.Data.SearchListResponse response = channelSearch.Execute();
+                List<string> ids = channelSearch.Execute().Items.ToList().Where(x => x.Id.Kind == "youtube#video").Select(x => x.Id.VideoId).ToList();
 
-                //List<string> ids = new List<string>();
-                //foreach (API.Data.SearchResult item in response.Items) {
-                //    if (item.Id.Kind == "youtube#video") { ids.Add(item.Id.VideoId); }
-                //}
-
-
-                IEnumerable<string> ids = response.Items.ToList().Where(x => x.Id.Kind == "youtube#video").Select(x => x.Id.VideoId);
-
-                LoggingManager.Log.Info($"Channel videos retrieved for ({channelID}), {response.Items.Count} videoIDs were retrieved.");
-
-                return ids.ToList();
+                LoggingManager.Log.Info($"Videos retrieved for '{channelID}' with {ids.Count} results.");
+                return ids;
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to get channel videos for: {channelID}.");
-
+                LoggingManager.Log.Error(ex, $"Failed to get videos for '{channelID}'.");
                 return null;
             }
         }
@@ -101,7 +84,7 @@ namespace VideoNotifications.YouTube {
         /// </summary>
         /// <param name="channelName">The name, or any other data about the channel to search for.</param>
         /// <param name="maxResults">Maximum number of channels to return. Min 1, Max 50.</param>
-        public List<Database.CollectionType.YouTubeChannel> Search(string channelName, long? maxResults = 10) {
+        public List<Database.Types.Channel> Search(string channelName, long? maxResults = 10) {
             try {
                 // https://developers.google.com/youtube/v3/docs/search/list
                 API.SearchResource.ListRequest channelSearch = APIService.Search.List("id,snippet");
@@ -111,34 +94,32 @@ namespace VideoNotifications.YouTube {
                 channelSearch.MaxResults = maxResults;
                 channelSearch.PrettyPrint = false;
 
-                API.Data.SearchListResponse response = channelSearch.Execute();
+                List<Database.Types.Channel> results = new List<Database.Types.Channel>();
 
-                List<Database.CollectionType.YouTubeChannel> channelsReturn = new List<Database.CollectionType.YouTubeChannel>();
-
-                foreach (API.Data.SearchResult item in response.Items) {
+                foreach (API.Data.SearchResult item in channelSearch.Execute().Items) {
                     if (item.Id.Kind == "youtube#channel") {
                         API.Data.SearchResultSnippet channel = item.Snippet;
 
-                        Database.CollectionType.YouTubeChannel channelInfo = new Database.CollectionType.YouTubeChannel {
-                            ChannelID = channel.ChannelId,
+                        Database.Types.Channel channelInfo = new Database.Types.Channel {
+                            ID = channel.ChannelId,
                             Title = channel.Title,
                             Description = channel.Description,
                             URL = $"https://www.youtube.com/channel/{channel.ChannelId}",
                             ThumbnailURL = GetBestThumbnail(channel.Thumbnails)
                         };
 
-                        channelsReturn.Add(channelInfo);
-                        LoggingManager.Log.Info($"Channel information processed for '{channelInfo.Title}' ({channelInfo.ChannelID}).");
+                        results.Add(channelInfo);
+                        LoggingManager.Log.Info($"Information processed for '{channelInfo.ID}'.");
                     }
                 }
 
-                return channelsReturn;
+                return results;
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to search for channels, searched for term: {channelName}.");
-
+                LoggingManager.Log.Error(ex, $"Failed to search for '{channelName}'.");
                 return null;
             }
         }
+
     }
 
 }

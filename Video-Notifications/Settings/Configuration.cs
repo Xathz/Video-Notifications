@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using VideoNotifications.Database.CollectionType;
+using VideoNotifications.Database.Types;
 
 namespace VideoNotifications.Settings {
 
@@ -41,14 +41,14 @@ namespace VideoNotifications.Settings {
         /// When a new video notification is shown, set the video status to this.
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public Status NotificationDefaultVideoStatus { get; set; } = Status.Watched;
+        public WatchStatus NotificationDefaultVideoStatus { get; set; } = WatchStatus.Watched;
 
         /// <summary>
         /// When a new channel is added, set the video status to this.
         /// This only applies to the first batch of videos that gets added to the database, when you add a new channel.
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public Status NewChannelDefaultVideoStatus { get; set; } = Status.Unwatched;
+        public WatchStatus NewChannelDefaultVideoStatus { get; set; } = WatchStatus.Unwatched;
 
         /// <summary>
         /// Check YouTube every # (this) minutes for new videos.

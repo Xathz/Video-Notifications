@@ -1,30 +1,29 @@
 ﻿using System;
-using API = Google.Apis.YouTube.v3;
-//using VideoNotifications.Database.CollectionType;
-using VideoNotifications.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using VideoNotifications.Utilities;
+using API = Google.Apis.YouTube.v3;
 
 namespace VideoNotifications.YouTube {
 
     internal class Videos : YouTubeBase {
 
         /// <summary>
-        /// Get information about a video.
+        /// Get information about a single video.
         /// </summary>
-        /// <param name="videoID">ID of the video to get information for.</param>
-        public Database.CollectionType.YouTubeVideo Single(string videoID) {
+        /// <param name="id">ID of the video to get information for.</param>
+        public Database.Types.Video Single(string id) {
             try {
                 // https://developers.google.com/youtube/v3/docs/videos/list
                 API.VideosResource.ListRequest videoSearch = APIService.Videos.List("id,snippet,contentDetails.duration");
-                videoSearch.Id = videoID;
+                videoSearch.Id = id;
                 videoSearch.MaxResults = 1;
                 videoSearch.PrettyPrint = false;
 
                 API.Data.Video response = videoSearch.Execute().Items[0];
 
-                Database.CollectionType.YouTubeVideo video = new Database.CollectionType.YouTubeVideo {
-                    VideoID = response.Id,
+                Database.Types.Video video = new Database.Types.Video {
+                    ID = response.Id,
                     ChannelID = response.Snippet.ChannelId,
                     Title = response.Snippet.Title,
                     Description = response.Snippet.Description,
@@ -32,15 +31,13 @@ namespace VideoNotifications.YouTube {
                     Posted = response.Snippet.PublishedAt,
                     URL = $"https://www.youtube.com/watch?v={response.Id}",
                     ThumbnailURL = GetBestThumbnail(response.Snippet.Thumbnails),
-                    Status = Database.CollectionType.Status.Unwatched
+                    WatchStatus = Database.Types.WatchStatus.Unwatched
                 };
 
-                LoggingManager.Log.Info($"Video information processed for '{video.Title}' ({video.VideoID}) by channel ({video.ChannelID}).");
-
+                LoggingManager.Log.Info($"Information processed for '{video.ID}' posted by '{video.ChannelID}'.");
                 return video;
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to get video information for: {videoID}.");
-
+                LoggingManager.Log.Error(ex, $"Failed to get information for '{id}'.");
                 return null;
             }
         }
@@ -48,46 +45,43 @@ namespace VideoNotifications.YouTube {
         /// <summary>
         /// Get information about mutiple videos.
         /// </summary>
-        /// <param name="videoIDs">Videos to get information about.</param>
-        public List<Database.CollectionType.YouTubeVideo> Bulk(List<string> videoIDs) {
+        /// <param name="ids">Videos to get information for.</param>
+        public List<Database.Types.Video> Bulk(List<string> ids) {
             try {
                 // https://developers.google.com/youtube/v3/docs/videos/list
-                if (videoIDs.Count == 0) { return null; }
+                if (ids.Count == 0) { return null; }
 
-                List<List<string>> videoIDChunks = new List<List<string>>();
-                List<Database.CollectionType.YouTubeVideo> videosReturn = new List<Database.CollectionType.YouTubeVideo>();
+                List<(int chunkID, List<string> videoIDs)> videoIDChunks = new List<(int chunkID, List<string> videoIDs)>();
+                List<Database.Types.Video> videosReturn = new List<Database.Types.Video>();
+                int chunkNumber = 1;
 
-                SplitIntoChunksLoop:
-                if (videoIDs.Count > 0) {
-
-                    if ((videoIDs.Count > 50) || (videoIDs.Count == 50)) {
-                        videoIDChunks.Add(videoIDs.Take(50).ToList());
-                        videoIDs.RemoveRange(0, 50);
+                SplitIntoChunksLoop:          
+                if (ids.Count > 0) {
+                    if ((ids.Count > 50) || (ids.Count == 50)) {
+                        videoIDChunks.Add((chunkNumber, ids.Take(50).ToList()));
+                        ids.RemoveRange(0, 50);
                     } else {
-                        videoIDChunks.Add(videoIDs.Take(videoIDs.Count).ToList());
-                        videoIDs.RemoveRange(0, videoIDs.Count);
+                        videoIDChunks.Add((chunkNumber, ids.Take(ids.Count).ToList()));
+                        ids.RemoveRange(0, ids.Count);
                     }
 
+                    chunkNumber++;
                     goto SplitIntoChunksLoop;
                 }
+                LoggingManager.Log.Info($"Video chunk processing finished with {videoIDChunks.Count} total chunks.");
 
-                LoggingManager.Log.Info($"Video ID chunk processing finished. {videoIDChunks.Count} total chunks.");
-                for (int i = 0; i < videoIDChunks.Count; i++) {
-                    LoggingManager.Log.Info($"Chunk #{i} contains {videoIDChunks[i].Count} videoIDs.");
-                }
-
-                foreach (List<string> chunk in videoIDChunks) {
+                foreach ((int chunkID, List<string> videoIDs) in videoIDChunks) {
                     API.VideosResource.ListRequest videoSearch = APIService.Videos.List("id,snippet,contentDetails");
-                    videoSearch.Id = string.Join(",", chunk);
-                    videoSearch.MaxResults = chunk.Count;
+                    videoSearch.Id = string.Join(",", videoIDs);
+                    videoSearch.MaxResults = videoIDs.Count;
                     videoSearch.PrettyPrint = false;
 
                     API.Data.VideoListResponse response = videoSearch.Execute();
 
                     IList<API.Data.Video> videos = response.Items;
                     foreach (API.Data.Video video in videos) {
-                        Database.CollectionType.YouTubeVideo videoInfo = new Database.CollectionType.YouTubeVideo {
-                            VideoID = video.Id,
+                        Database.Types.Video videoInfo = new Database.Types.Video {
+                            ID = video.Id,
                             ChannelID = video.Snippet.ChannelId,
                             Title = video.Snippet.Title,
                             Description = video.Snippet.Description,
@@ -95,18 +89,17 @@ namespace VideoNotifications.YouTube {
                             Posted = video.Snippet.PublishedAt,
                             URL = $"https://www.youtube.com/watch?v={video.Id}",
                             ThumbnailURL = GetBestThumbnail(video.Snippet.Thumbnails),
-                            Status = Database.CollectionType.Status.Unwatched
+                            WatchStatus = Database.Types.WatchStatus.Unwatched
                         };
 
                         videosReturn.Add(videoInfo);
-                        LoggingManager.Log.Info($"Video information processed for '{videoInfo.Title}' ({videoInfo.VideoID}) by channel ({videoInfo.ChannelID}).");
+                        LoggingManager.Log.Info($"Chunk {chunkID}: Information processed for '{videoInfo.ID}' posted by '{videoInfo.ChannelID}'.");
                     }
                 }
 
                 return videosReturn;
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to get bulk video information for: {string.Join(",", videoIDs)}.");
-
+                LoggingManager.Log.Error(ex, $"Failed to get information for '{string.Join(",", ids)}'.");
                 return null;
             }
         }

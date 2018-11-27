@@ -16,7 +16,7 @@ namespace VideoNotifications.Utilities {
                 MemoryStream memoryStream = new MemoryStream(webClient.DownloadData(url));
                 return memoryStream;
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to download: {url}.");
+                LoggingManager.Log.Error(ex, $"Failed to download '{url}'.");
                 return null;
             }
         }

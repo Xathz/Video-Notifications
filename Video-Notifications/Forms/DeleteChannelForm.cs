@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using VideoNotifications.Database;
-using VideoNotifications.Database.CollectionType;
+using VideoNotifications.Database.Types;
 using VideoNotifications.Settings;
 using VideoNotifications.Utilities;
 
@@ -54,25 +54,25 @@ namespace VideoNotifications.Forms {
         private void ChannelsListView_MouseDoubleClick(object sender, MouseEventArgs e) {
             ListViewItem clickedItem = ChannelsListView.GetItemAt(e.X, e.Y);
             if (clickedItem != null) {
-                YouTubeChannel channel = (YouTubeChannel)clickedItem.Tag;
+                Channel channel = (Channel)clickedItem.Tag;
                 if (MessageBox.Show($"Really delete {channel.Title}?{Environment.NewLine}{Environment.NewLine}You will no longer receive notifications and the videos from{Environment.NewLine}this channel will be deleted from the database.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
                     try {
-                        IEnumerable<YouTubeVideo> channelVideos = Channels.GetAllVideos(channel.ChannelID);
+                        IEnumerable<Video> channelVideos = Channels.GetAllVideos(channel.ID);
                         int channelVideosTotal = channelVideos.Count();
 
-                        foreach (YouTubeVideo video in channelVideos) {
+                        foreach (Video video in channelVideos) {
                             Videos.Delete(video);
-                            Files.DeleteImage(video.VideoID);
+                            Files.DeleteImage(video.ID);
                         }
                         Channels.Delete(channel);
-                        Files.DeleteImage(channel.ChannelID);
+                        Files.DeleteImage(channel.ID);
 
                         AddAllChannels();
                         FormsManager.StaticMainForm.AddAllChannels();
-                        LoggingManager.Log.Info($"Deleted channel: '{channel.Title}' ({channel.ChannelID}).");
+                        LoggingManager.Log.Info($"Deleted channel: '{channel.Title}' ({channel.ID}).");
                         MessageBox.Show($"{channel.Title} was deleted and {channelVideosTotal} videos were removed from the database.", "Channel Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     } catch (Exception ex) {
-                        LoggingManager.Log.Error(ex, $"Failed to delete a channel. Channel: '{channel.Title}' ({channel.ChannelID}).");
+                        LoggingManager.Log.Error(ex, $"Failed to delete a channel. Channel: '{channel.Title}' ({channel.ID}).");
                     }
                 }
             }
@@ -86,7 +86,7 @@ namespace VideoNotifications.Forms {
             ChannelsListView.BeginUpdate();
             ChannelsListView.Items.Clear();
 
-            foreach (YouTubeChannel channel in Channels.GetAll()) {
+            foreach (Channel channel in Channels.GetAll()) {
                 AddChannelToListView(channel);
             }
 
@@ -97,16 +97,16 @@ namespace VideoNotifications.Forms {
         /// Add a single channel to <see cref="ChannelsListView"/>.
         /// </summary>
         /// <param name="channel">Channel to add.</param>
-        private void AddChannelToListView(YouTubeChannel channel) {
-            if (!ChannelsImageList.Images.ContainsKey(channel.ChannelID)) {
-                Image resizedImage = ImageUtils.ResizeImage(Files.GetThumbnail(channel.ChannelID), 24, 24);
-                ChannelsImageList.Images.Add(channel.ChannelID, resizedImage);
+        private void AddChannelToListView(Channel channel) {
+            if (!ChannelsImageList.Images.ContainsKey(channel.ID)) {
+                Image resizedImage = ImageUtils.ResizeImage(Files.GetThumbnail(channel.ID), 24, 24);
+                ChannelsImageList.Images.Add(channel.ID, resizedImage);
             }
 
             ListViewItem channelItem = new ListViewItem {
-                Name = channel.ChannelID,
+                Name = channel.ID,
                 Tag = channel,
-                ImageKey = channel.ChannelID,
+                ImageKey = channel.ID,
                 Font = new Font("Segoe UI Semibold", 10),
                 Text = $" {channel.Title}"
             };

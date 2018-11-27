@@ -21,11 +21,11 @@ namespace VideoNotifications.Database {
                     if (stream != null) {
                         _Database.FileStorage.Upload(imageID, $"{imageID}.jpg", stream);
 
-                        LoggingManager.Log.Info($"Image ({imageID}) was stored.");
+                        LoggingManager.Log.Info($"'{imageID}' was stored.");
                     }
                 }
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to store image: {imageID}.");
+                LoggingManager.Log.Error(ex, $"Failed to store '{imageID}'.");
             }
         }
 
@@ -47,7 +47,7 @@ namespace VideoNotifications.Database {
 
                 return Properties.Resources.VideoNotificationsPNG;
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to get image: {imageID}.");
+                LoggingManager.Log.Error(ex, $"Failed to get '{imageID}'.");
                 return Properties.Resources.VideoNotificationsPNG;
             }
         }
@@ -72,16 +72,16 @@ namespace VideoNotifications.Database {
             try {
                 if (_Database.FileStorage.Exists($"{imageID}-thumbnail")) { _Database.FileStorage.Delete($"{imageID}-thumbnail"); }
 
-                LoggingManager.Log.Info($"Image ({imageID}-thumbnail) was deleted.");
+                LoggingManager.Log.Info($"'{imageID}-thumbnail' was deleted.");
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to delete image: {imageID}-thumbnail.");
+                LoggingManager.Log.Error(ex, $"Failed to delete '{imageID}-thumbnail'.");
             }
             try {
                 if (_Database.FileStorage.Exists($"{imageID}-banner")) { _Database.FileStorage.Delete($"{imageID}-banner"); }
 
-                LoggingManager.Log.Info($"Image ({imageID}-banner) was deleted.");
+                LoggingManager.Log.Info($"'{imageID}-banner' was deleted.");
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to delete image: {imageID}-banner.");
+                LoggingManager.Log.Error(ex, $"Failed to delete '{imageID}-banner'.");
             }
         }
 

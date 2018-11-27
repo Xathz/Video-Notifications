@@ -1,21 +1,21 @@
 ﻿using System;
 using LiteDB;
 
-namespace VideoNotifications.Database.CollectionType {
+namespace VideoNotifications.Database.Types {
 
     /// <summary>
     /// A YouTube video.
     /// </summary>
-    public class YouTubeVideo {
+    public class Video {
 
         /// <summary>
         /// Video ID.
         /// </summary>
         [BsonId]
-        public string VideoID { get; set; }
+        public string ID { get; set; }
 
         /// <summary>
-        /// Channel ID. Corresponds to a <see cref="YouTubeChannel.ChannelID"/>.
+        /// Channel ID. Corresponds to a <see cref="Channel.ID"/>.
         /// </summary>
         public string ChannelID { get; set; }
 
@@ -40,7 +40,7 @@ namespace VideoNotifications.Database.CollectionType {
         public DateTime? Posted { get; set; }
 
         /// <summary>
-        /// URL to the video. https://www.youtube.com/watch?v=<see cref="VideoID"/>
+        /// URL to the video. https://www.youtube.com/watch?v=<see cref="ID"/>
         /// </summary>
         public string URL { get; set; }
 
@@ -52,7 +52,7 @@ namespace VideoNotifications.Database.CollectionType {
         /// <summary>
         /// Watched status of the video.
         /// </summary>
-        public Status Status { get; set; }
+        public WatchStatus WatchStatus { get; set; }
 
     }
 
