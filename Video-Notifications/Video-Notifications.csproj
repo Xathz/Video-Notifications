@@ -223,11 +223,8 @@
     <Compile Include="Utilities\ProcessUtils.cs" />
     <Compile Include="Utilities\StringUtils.cs" />
     <Compile Include="Utilities\TimeSpanUtils.cs" />
-    <Compile Include="YouTube\ChannelInfo.cs" />
-    <Compile Include="YouTube\ChannelVideos.cs" />
-    <Compile Include="YouTube\SearchForChannels.cs" />
-    <Compile Include="YouTube\VideoInfo.cs" />
-    <Compile Include="YouTube\VideoInfoBulk.cs" />
+    <Compile Include="YouTube\Channel.cs" />
+    <Compile Include="YouTube\Videos.cs" />
     <Compile Include="YouTube\YouTubeBase.cs" />
     <EmbeddedResource Include="Forms\AddChannelForm.resx">
       <DependentUpon>AddChannelForm.cs</DependentUpon>
