@@ -6,7 +6,7 @@ using VideoNotifications.Database.Types;
 namespace VideoNotifications.Database {
 
     /// <summary>
-    /// Query, insert, update, delete, and other options for the 'channel' <see cref="LiteDB.LiteCollection{YouTubeChannel}"/>.
+    /// Query, insert, update, delete, and other options for the 'channel' <see cref="LiteDB.LiteCollection{Channel}"/>.
     /// </summary>
     internal abstract class Channels : DatabaseBase {
 

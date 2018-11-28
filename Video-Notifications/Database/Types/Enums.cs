@@ -27,4 +27,26 @@
 
     }
 
+    /// <summary>
+    /// Type of image.
+    /// </summary>
+    public enum ImageType {
+
+        /// <summary>
+        /// Channel banner.
+        /// </summary>
+        ChannelBanner,
+
+        /// <summary>
+        /// Channel icon.
+        /// </summary>
+        ChannelIcon,
+
+        /// <summary>
+        /// Video thumbnail
+        /// </summary>
+        VideoThumbnail
+
+    }
+
 }

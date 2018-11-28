@@ -82,15 +82,14 @@ namespace VideoNotifications.YouTube {
         /// Search for a channel by its name, or a multitude of other information.
         /// </summary>
         /// <param name="channelName">The name, or any other data about the channel to search for.</param>
-        /// <param name="maxResults">Maximum number of channels to return. Min 1, Max 50.</param>
-        public List<Database.Types.Channel> Search(string channelName, long? maxResults = 10) {
+        public List<Database.Types.Channel> Search(string channelName) {
             try {
                 // https://developers.google.com/youtube/v3/docs/search/list
                 API.SearchResource.ListRequest channelSearch = APIService.Search.List("id,snippet");
                 channelSearch.Q = channelName;
                 channelSearch.Type = "channel";
                 channelSearch.Order = API.SearchResource.ListRequest.OrderEnum.Relevance;
-                channelSearch.MaxResults = maxResults;
+                channelSearch.MaxResults = 10;
                 channelSearch.PrettyPrint = false;
 
                 List<Database.Types.Channel> results = new List<Database.Types.Channel>();

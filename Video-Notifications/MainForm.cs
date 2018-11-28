@@ -39,7 +39,7 @@ namespace VideoNotifications {
             PauseNotificationsMenuItem.Checked = SettingsManager.Configuration.PauseNotifications;
             MinimizeToTrayMenuItem.Checked = SettingsManager.Configuration.MinimizeToTray;
             LightIconMenuItem.Checked = SettingsManager.Configuration.UseLightTrayIcon;
-            YouTubeCheckTimer.Interval = (SettingsManager.Configuration.CheckForNewVideosEveryMinutes * 60000);
+            YouTubeCheckTimer.Interval = (SettingsManager.Configuration.CheckForNewVideosEvery * 60000);
 
             if (SettingsManager.Configuration.MainWindow.PositionSet()) {
                 Location = new Point(SettingsManager.Configuration.MainWindow.X, SettingsManager.Configuration.MainWindow.Y);
@@ -94,7 +94,7 @@ namespace VideoNotifications {
             if (ChannelsListView.SelectedItems.Count == 1) {
                 Database.Types.Channel selectedChannel = (Database.Types.Channel)ChannelsListView.SelectedItems[0].Tag;
 
-                Image imageFaded = ImageUtils.SetImageOpacity(Database.Files.GetThumbnail(selectedChannel.ID), 0.16f);
+                Image imageFaded = ImageUtils.SetImageOpacity((Image)Database.ImageFile.Get(selectedChannel.ID, Database.Types.ImageType.ChannelIcon), 0.16f);
                 BackgroundImageLayout = (imageFaded.Size.Height < Size.Height) ? ImageLayout.Stretch : ImageLayout.Center;
                 BackgroundImage = imageFaded;
 
@@ -111,7 +111,7 @@ namespace VideoNotifications {
                 Database.Types.Video selectedVideo = (Database.Types.Video)VideosListView.SelectedItems[0].Tag;
                 string openVideoTip = $"Open video in browser.{Environment.NewLine}{selectedVideo.URL}";
 
-                VideoPictureBox.Image = Database.Files.GetThumbnail(selectedVideo.ID);
+                VideoPictureBox.Image = Database.ImageFile.Get(selectedVideo.ID, Database.Types.ImageType.VideoThumbnail);
                 VideoPictureBox.Visible = true;
                 GeneralToolTip.SetToolTip(VideoPictureBox, openVideoTip);
                 VideoDescriptionLabel.Text = StringUtils.FormatVideoDescription(selectedVideo.Description);
@@ -207,7 +207,7 @@ namespace VideoNotifications {
                 List<Database.Types.Video> videoInfo = new YouTube.Videos().Bulk(videosToGetInfo);
                 foreach (Database.Types.Video video in videoInfo) {
                     Database.Videos.Insert(video);
-                    Database.Files.StoreImage($"{video.ID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(video.ThumbnailURL));
+                    Database.ImageFile.Insert(video.ThumbnailURL, video.ID, Database.Types.ImageType.VideoThumbnail);
                 }
 
                 e.Result = true;

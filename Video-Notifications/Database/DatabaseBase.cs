@@ -51,23 +51,17 @@ namespace VideoNotifications.Database {
         /// Keep the <see cref="SettingsManager.Configuration.MaximumVideosToKeepPerChannel"/> most recent videos for every channel, delete all else.
         /// </summary>
         protected static void PruneVideos() {
-            List<Video> videosToDelete = new List<Video>();
-            List<LiteFileInfo> filesToDelete = new List<LiteFileInfo>();
+            List<Video> delete = new List<Video>();
 
             foreach (Channel channel in _Channels.FindAll()) {
-                videosToDelete.AddRange(Channels.GetAllVideos(channel.ID).OrderByDescending(v => v.Posted).Skip(SettingsManager.Configuration.MaximumVideosToKeepPerChannel));
+                delete.AddRange(Channels.GetAllVideos(channel.ID).OrderByDescending(v => v.Posted).Skip(SettingsManager.Configuration.MaximumVideosToKeepPerChannel));
             }
 
-            foreach (Video video in videosToDelete) {
-                filesToDelete.AddRange(_Database.FileStorage.Find(video.ID));
+            foreach (Video video in delete) {
                 _Videos.Delete(v => v.ID == video.ID);
+                ImageFile.Delete(video.ID, ImageType.VideoThumbnail);
             }
-            if (videosToDelete.Count > 0) { LoggingManager.Log.Info($"{videosToDelete.Count} old videos were deleted."); }
-
-            foreach (LiteFileInfo file in filesToDelete) {
-                _Database.FileStorage.Delete(file.Id);
-            }
-            if (filesToDelete.Count > 0) { LoggingManager.Log.Info($"{filesToDelete.Count} old files were deleted."); }
+            if (delete.Count > 0) { LoggingManager.Log.Info($"{delete.Count} old videos and thumbnails were deleted."); }
 
             _Database.Shrink();
         }

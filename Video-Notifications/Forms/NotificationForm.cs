@@ -37,7 +37,7 @@ namespace VideoNotifications.Forms {
             _Video = video;
             _Channel = Database.Channels.GetByID(_Video.ChannelID);
 
-            Image channelImage = Database.Files.GetThumbnail(_Video.ChannelID);
+            Image channelImage = Database.ImageFile.Get(_Video.ChannelID, Database.Types.ImageType.ChannelIcon);
             Image channelImageResized = ImageUtils.ResizeImage(channelImage, 365, 365);
             Image channelImageFaded = ImageUtils.SetImageOpacity(channelImageResized, 0.16f);
             BackgroundImage = channelImageFaded;
@@ -45,7 +45,7 @@ namespace VideoNotifications.Forms {
             ChannelPictureBox.Image = channelImage;
             ChannelPictureBox.Tag = _Channel.URL;
 
-            VideoPictureBox.Image = Database.Files.GetThumbnail(_Video.ID);
+            VideoPictureBox.Image = Database.ImageFile.Get(_Video.ID, Database.Types.ImageType.VideoThumbnail);
             VideoPictureBox.Tag = _Video.URL;
 
             ChannelLabel.Text = $"A new video was posted by {_Channel.Title} {_Video.Posted.Value.Humanize()}.";

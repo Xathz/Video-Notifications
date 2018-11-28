@@ -52,15 +52,21 @@ namespace VideoNotifications.Settings {
 
         /// <summary>
         /// Check YouTube every # (this) minutes for new videos.
-        /// It is recommended to not set this lower than 10 minutes.
+        /// It is not recommended to set this lower than 10 minutes.
         /// </summary>
-        public int CheckForNewVideosEveryMinutes { get; set; } = 30;
+        public int CheckForNewVideosEvery { get; set; } = 30;
 
         /// <summary>
         /// Maximum videos to keep per channel, videos over this limit will be removed
         /// from the database starting with the oldest each time the application is started.
         /// </summary>
         public int MaximumVideosToKeepPerChannel { get; set; } = 50;
+
+        /// <summary>
+        /// Images are cached in memory when loaded from the disk.
+        /// Remove images from cache if unused/not accessed for more than (this) minutes.
+        /// </summary>
+        public int ImageCacheLifetime { get; set; } = 60;
 
         /// <summary>
         /// Main window location [X, Y] and size [Width, Height].

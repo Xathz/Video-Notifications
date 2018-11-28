@@ -50,6 +50,26 @@ namespace VideoNotifications {
         /// </summary>
         public static string YouTubeDatabaseFile => Path.Combine(WorkingDirectory, "YouTubeData.db");
 
+        /// <summary>
+        /// Downloaded images directory.
+        /// </summary>
+        public static string ImagesDirectory => Path.Combine(WorkingDirectory, "Images");
+
+        /// <summary>
+        /// Channel banners directory.
+        /// </summary>
+        public static string ChannelBannerDirectory => Path.Combine(ImagesDirectory, "ChannelBanners");
+
+        /// <summary>
+        /// Channel icons directory.
+        /// </summary>
+        public static string ChannelIconDirectory => Path.Combine(ImagesDirectory, "ChannelIcons");
+
+        /// <summary>
+        /// Video thumbnails directory.
+        /// </summary>
+        public static string VideoThumbnailDirectory => Path.Combine(ImagesDirectory, "VideoThumbnails");
+
     }
 
 }

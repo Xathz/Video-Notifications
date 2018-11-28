@@ -67,29 +67,29 @@ namespace VideoNotifications.Forms {
                     return;
                 }
 
-                if (MessageBox.Show($"Really add {clickedChannel.Title}?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
+                if (MessageBox.Show($"Add {clickedChannel.Title}?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
                     try {
                         DisableControls("Processing...", false);
 
                         Database.Types.Channel channel = new YouTube.Channel().Info(clickedChannel.ID);
                         Database.Channels.Upsert(channel);
 
-                        Database.Files.StoreImage($"{channel.ID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(channel.ThumbnailURL));
-                        Database.Files.StoreImage($"{channel.ID}-banner", NetworkUtils.DownloadFileToMemoryStream(channel.BannerURL));
+                        Database.ImageFile.Insert(channel.BannerURL, channel.ID, Database.Types.ImageType.ChannelBanner);
+                        Database.ImageFile.Insert(channel.ThumbnailURL, channel.ID, Database.Types.ImageType.ChannelIcon);
 
                         List<Database.Types.Video> videos = new YouTube.Channel().RecentVideos(channel.ID);
                         foreach (Database.Types.Video video in videos) {
                             video.WatchStatus = SettingsManager.Configuration.NewChannelDefaultVideoStatus;
                             Database.Videos.Insert(video);
-                            Database.Files.StoreImage($"{video.ID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(video.ThumbnailURL));
+                            Database.ImageFile.Insert(video.ThumbnailURL, video.ID, Database.Types.ImageType.VideoThumbnail);
                         }
 
                         FormsManager.StaticMainForm.AddAllChannels();
-                        LoggingManager.Log.Info($"Added channel: '{channel.Title}' ({channel.ID}).");
+                        LoggingManager.Log.Info($"Added channel '{channel.ID}'.");
                         EnableControls();
-                        MessageBox.Show($"'{channel.Title}' was added along with {videos.Count} videos.", "Channel Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"'{channel.Title}' was added along with {videos.Count} new videos.", "Channel Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     } catch (Exception ex) {
-                        LoggingManager.Log.Error(ex, $"Failed to add a channel. Channel: '{clickedChannel.Title}' ({clickedChannel.ID}).");
+                        LoggingManager.Log.Error(ex, $"Failed to add channel '{clickedChannel.ID}'.");
                         EnableControls();
                     }
                 }

@@ -53,7 +53,7 @@ namespace VideoNotifications {
         /// <param name="channel">Channel to add.</param>
         private void AddChannelToListView(Database.Types.Channel channel) {
             if (!ChannelsImageList.Images.ContainsKey(channel.ID)) {
-                Image resizedImage = ImageUtils.ResizeImage(Database.Files.GetThumbnail(channel.ID), 24, 24);
+                Image resizedImage = ImageUtils.ResizeImage((Image)Database.ImageFile.Get(channel.ID, Database.Types.ImageType.ChannelIcon), 24, 24);
                 ChannelsImageList.Images.Add(channel.ID, resizedImage);
             }
 
