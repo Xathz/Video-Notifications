@@ -174,7 +174,7 @@
     </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="Database\Channels.cs" />
-    <Compile Include="Database\Types\Status.cs" />
+    <Compile Include="Database\Types\WatchStatus.cs" />
     <Compile Include="Database\Types\Channel.cs" />
     <Compile Include="Database\Types\Video.cs" />
     <Compile Include="Database\DatabaseBase.cs" />

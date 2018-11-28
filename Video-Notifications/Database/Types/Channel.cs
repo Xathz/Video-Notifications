@@ -26,7 +26,8 @@ namespace VideoNotifications.Database.Types {
         /// <summary>
         /// URL to the channel. https://www.youtube.com/channel/<see cref="ID"/>
         /// </summary>
-        public string URL { get; set; }
+        [BsonIgnore]
+        public string URL => $"https://www.youtube.com/channel/{ID}";
 
         /// <summary>
         /// URL to the channel banner.

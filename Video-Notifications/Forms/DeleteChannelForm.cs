@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using VideoNotifications.Database;
-using VideoNotifications.Database.Types;
 using VideoNotifications.Settings;
 using VideoNotifications.Utilities;
 
@@ -54,18 +52,18 @@ namespace VideoNotifications.Forms {
         private void ChannelsListView_MouseDoubleClick(object sender, MouseEventArgs e) {
             ListViewItem clickedItem = ChannelsListView.GetItemAt(e.X, e.Y);
             if (clickedItem != null) {
-                Channel channel = (Channel)clickedItem.Tag;
+                Database.Types.Channel channel = (Database.Types.Channel)clickedItem.Tag;
                 if (MessageBox.Show($"Really delete {channel.Title}?{Environment.NewLine}{Environment.NewLine}You will no longer receive notifications and the videos from{Environment.NewLine}this channel will be deleted from the database.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
                     try {
-                        IEnumerable<Video> channelVideos = Channels.GetAllVideos(channel.ID);
+                        IEnumerable<Database.Types.Video> channelVideos = Database.Channels.GetAllVideos(channel.ID);
                         int channelVideosTotal = channelVideos.Count();
 
-                        foreach (Video video in channelVideos) {
-                            Videos.Delete(video);
-                            Files.DeleteImage(video.ID);
+                        foreach (Database.Types.Video video in channelVideos) {
+                            Database.Videos.Delete(video);
+                            Database.Files.DeleteImage(video.ID);
                         }
-                        Channels.Delete(channel);
-                        Files.DeleteImage(channel.ID);
+                        Database.Channels.Delete(channel);
+                        Database.Files.DeleteImage(channel.ID);
 
                         AddAllChannels();
                         FormsManager.StaticMainForm.AddAllChannels();
@@ -86,7 +84,7 @@ namespace VideoNotifications.Forms {
             ChannelsListView.BeginUpdate();
             ChannelsListView.Items.Clear();
 
-            foreach (Channel channel in Channels.GetAll()) {
+            foreach (Database.Types.Channel channel in Database.Channels.GetAll()) {
                 AddChannelToListView(channel);
             }
 
@@ -97,9 +95,9 @@ namespace VideoNotifications.Forms {
         /// Add a single channel to <see cref="ChannelsListView"/>.
         /// </summary>
         /// <param name="channel">Channel to add.</param>
-        private void AddChannelToListView(Channel channel) {
+        private void AddChannelToListView(Database.Types.Channel channel) {
             if (!ChannelsImageList.Images.ContainsKey(channel.ID)) {
-                Image resizedImage = ImageUtils.ResizeImage(Files.GetThumbnail(channel.ID), 24, 24);
+                Image resizedImage = ImageUtils.ResizeImage(Database.Files.GetThumbnail(channel.ID), 24, 24);
                 ChannelsImageList.Images.Add(channel.ID, resizedImage);
             }
 

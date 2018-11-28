@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-//using VideoNotifications.Database.CollectionType;
 using VideoNotifications.Forms;
 using VideoNotifications.Settings;
 using VideoNotifications.Utilities;

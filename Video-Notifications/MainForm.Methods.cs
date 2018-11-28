@@ -3,8 +3,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Humanizer;
-//using VideoNotifications.Database;
-//using VideoNotifications.Database.CollectionType;
 using VideoNotifications.Utilities;
 
 namespace VideoNotifications {

@@ -26,7 +26,6 @@ namespace VideoNotifications.YouTube {
                     ID = response.Id,
                     Title = response.Snippet.Title,
                     Description = response.Snippet.Description,
-                    URL = $"https://www.youtube.com/channel/{response.Id}",
                     BannerURL = response.BrandingSettings.Image.BannerMobileExtraHdImageUrl,
                     ThumbnailURL = GetBestThumbnail(response.Snippet.Thumbnails)
                 };
@@ -51,7 +50,7 @@ namespace VideoNotifications.YouTube {
                 return videos;
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to get videos for '{channelID}'.");
-                return null;
+                return new List<Database.Types.Video>();
             }
         }
 
@@ -75,7 +74,7 @@ namespace VideoNotifications.YouTube {
                 return ids;
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to get videos for '{channelID}'.");
-                return null;
+                return new List<string>();
             }
         }
 
@@ -104,7 +103,6 @@ namespace VideoNotifications.YouTube {
                             ID = channel.ChannelId,
                             Title = channel.Title,
                             Description = channel.Description,
-                            URL = $"https://www.youtube.com/channel/{channel.ChannelId}",
                             ThumbnailURL = GetBestThumbnail(channel.Thumbnails)
                         };
 
@@ -116,7 +114,7 @@ namespace VideoNotifications.YouTube {
                 return results;
             } catch (Exception ex) {
                 LoggingManager.Log.Error(ex, $"Failed to search for '{channelName}'.");
-                return null;
+                return new List<Database.Types.Channel>();
             }
         }
 

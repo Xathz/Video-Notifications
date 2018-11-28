@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-//using VideoNotifications.Database;
-//using VideoNotifications.Database.CollectionType;
 using VideoNotifications.Settings;
 using VideoNotifications.Utilities;
-//using VideoNotifications.YouTube;
 
 namespace VideoNotifications.Forms {
 

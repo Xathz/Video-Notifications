@@ -42,7 +42,8 @@ namespace VideoNotifications.Database.Types {
         /// <summary>
         /// URL to the video. https://www.youtube.com/watch?v=<see cref="ID"/>
         /// </summary>
-        public string URL { get; set; }
+        [BsonIgnore]
+        public string URL => $"https://www.youtube.com/watch?v={ID}";
 
         /// <summary>
         /// URL to the <see cref="YouTube.YouTubeBase.GetBestThumbnail(Google.Apis.YouTube.v3.Data.ThumbnailDetails)"/> result.
