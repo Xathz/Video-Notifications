@@ -25,7 +25,7 @@ namespace VideoNotifications.Database {
         /// </summary>
         /// <param name="id"></param>
         /// <param name="type"></param>
-        public static bool Exists(string id, Types.ImageType type) => Exists(IO.Path.Combine(type.Path(), id));
+        public static bool Exists(string id, ImageType type) => Exists(IO.Path.Combine(type.Path(), id));
 
         /// <summary>
         /// 
@@ -33,7 +33,7 @@ namespace VideoNotifications.Database {
         /// <param name="url"></param>
         /// <param name="id"></param>
         /// <param name="type"></param>
-        public static void Insert(string url, string id, Types.ImageType type) {
+        public static void Insert(string url, string id, ImageType type) {
             string path = IO.Path.Combine(type.Path(), id);
 
             try {
@@ -53,7 +53,7 @@ namespace VideoNotifications.Database {
         /// <param name="id"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Image Get(string id, Types.ImageType type) {
+        public static Image Get(string id, ImageType type) {
             string path = IO.Path.Combine(type.Path(), id);
 
             try {
@@ -81,7 +81,7 @@ namespace VideoNotifications.Database {
         /// </summary>
         /// <param name="id"></param>
         /// <param name="type"></param>
-        public static void Delete(string id, Types.ImageType type) {
+        public static void Delete(string id, ImageType type) {
             string path = IO.Path.Combine(type.Path(), id);
 
             try {

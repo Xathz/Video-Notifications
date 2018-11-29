@@ -106,10 +106,10 @@
     </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="Database\Channels.cs" />
-    <Compile Include="Database\Types\Enums.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Database\Types\Channel.cs" />
     <Compile Include="Database\Types\Video.cs" />
-    <Compile Include="Database\DatabaseBase.cs" />
+    <Compile Include="Database\Base.cs" />
     <Compile Include="Database\ImageFile.cs" />
     <Compile Include="Database\Videos.cs" />
     <Compile Include="Forms\APIKeyForm.cs">
@@ -160,7 +160,7 @@
     <Compile Include="Utilities\TimeSpanUtils.cs" />
     <Compile Include="YouTube\Channel.cs" />
     <Compile Include="YouTube\Videos.cs" />
-    <Compile Include="YouTube\YouTubeBase.cs" />
+    <Compile Include="YouTube\Base.cs" />
     <EmbeddedResource Include="Forms\AddChannelForm.resx">
       <DependentUpon>AddChannelForm.cs</DependentUpon>
     </EmbeddedResource>

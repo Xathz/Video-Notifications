@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using VideoNotifications.Database;
 using VideoNotifications.Forms;
 using VideoNotifications.Settings;
 
@@ -40,7 +39,7 @@ namespace VideoNotifications {
 
             LoggingManager.Initialize();
             SettingsManager.Load();
-            DatabaseBase.Initialize();
+            Database.Base.Initialize();
 
             FormsManager.CloseSplashForm();
             if (string.IsNullOrWhiteSpace(SettingsManager.Configuration.YouTubeAPIKey)) {

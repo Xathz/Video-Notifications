@@ -35,7 +35,7 @@ namespace VideoNotifications.Database.Types {
         public string BannerURL { get; set; }
 
         /// <summary>
-        /// URL to the <see cref="YouTube.YouTubeBase.GetBestThumbnail(Google.Apis.YouTube.v3.Data.ThumbnailDetails)"/> result.
+        /// URL to the <see cref="YouTube.Base.GetBestThumbnail(Google.Apis.YouTube.v3.Data.ThumbnailDetails)"/> result.
         /// </summary>
         public string ThumbnailURL { get; set; }
 

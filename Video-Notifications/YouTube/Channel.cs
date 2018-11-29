@@ -5,7 +5,7 @@ using API = Google.Apis.YouTube.v3;
 
 namespace VideoNotifications.YouTube {
 
-    internal class Channel : YouTubeBase {
+    internal class Channel : Base {
 
         /// <summary>
         /// Get information about a channel.

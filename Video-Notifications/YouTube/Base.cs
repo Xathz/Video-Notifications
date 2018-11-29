@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Google.Apis.Services;
-using Google.Apis.YouTube.v3;
-using Google.Apis.YouTube.v3.Data;
 using VideoNotifications.Settings;
+using API = Google.Apis.YouTube.v3;
 
 namespace VideoNotifications.YouTube {
 
-    internal abstract class YouTubeBase {
+    internal abstract class Base {
 
         /// <summary>
         /// API base client information and setup.
@@ -22,14 +21,14 @@ namespace VideoNotifications.YouTube {
         /// <summary>
         /// YouTube API service.
         /// </summary>
-        protected static YouTubeService APIService = new YouTubeService(APIBaseClient);
+        protected static API.YouTubeService APIService = new API.YouTubeService(APIBaseClient);
 
         /// <summary>
         /// Sort all thumbnails and returns the best one based on width.
         /// </summary>
         /// <param name="thumbnailDetails">The YouTube <see cref="ThumbnailDetails"/>.</param>
-        protected string GetBestThumbnail(ThumbnailDetails thumbnailDetails) {
-            List<Thumbnail> thumbnails = new List<Thumbnail>();
+        protected string GetBestThumbnail(API.Data.ThumbnailDetails thumbnailDetails) {
+            List<API.Data.Thumbnail> thumbnails = new List<API.Data.Thumbnail>();
 
             if (thumbnailDetails.Default__ != null) { thumbnails.Add(thumbnailDetails.Default__); }
             if (thumbnailDetails.Standard != null) { thumbnails.Add(thumbnailDetails.Standard); }

@@ -8,7 +8,7 @@ namespace VideoNotifications.Database {
     /// <summary>
     /// Query, insert, update, delete, and other options for the 'videos' <see cref="LiteDB.LiteCollection{Video}"/>.
     /// </summary>
-    internal abstract class Videos : DatabaseBase {
+    internal abstract class Videos : Base {
 
         /// <summary>
         /// Get all the videos in the database.

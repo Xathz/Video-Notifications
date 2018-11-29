@@ -60,11 +60,11 @@ namespace VideoNotifications.Forms {
 
                         foreach (Database.Types.Video video in channelVideos) {
                             Database.Videos.Delete(video);
-                            Database.ImageFile.Delete(video.ID, Database.Types.ImageType.VideoThumbnail);
+                            Database.ImageFile.Delete(video.ID, ImageType.VideoThumbnail);
                         }
                         Database.Channels.Delete(channel);
-                        Database.ImageFile.Delete(channel.ID, Database.Types.ImageType.ChannelBanner);
-                        Database.ImageFile.Delete(channel.ID, Database.Types.ImageType.ChannelIcon);
+                        Database.ImageFile.Delete(channel.ID, ImageType.ChannelBanner);
+                        Database.ImageFile.Delete(channel.ID, ImageType.ChannelIcon);
 
                         AddAllChannels();
                         FormsManager.StaticMainForm.AddAllChannels();
@@ -98,7 +98,7 @@ namespace VideoNotifications.Forms {
         /// <param name="channel">Channel to add.</param>
         private void AddChannelToListView(Database.Types.Channel channel) {
             if (!ChannelsImageList.Images.ContainsKey(channel.ID)) {
-                Image resizedImage = ImageUtils.ResizeImage((Image)Database.ImageFile.Get(channel.ID, Database.Types.ImageType.ChannelIcon), 24, 24);
+                Image resizedImage = ImageUtils.ResizeImage((Image)Database.ImageFile.Get(channel.ID, ImageType.ChannelIcon), 24, 24);
                 ChannelsImageList.Images.Add(channel.ID, resizedImage);
             }
 

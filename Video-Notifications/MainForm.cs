@@ -94,7 +94,7 @@ namespace VideoNotifications {
             if (ChannelsListView.SelectedItems.Count == 1) {
                 Database.Types.Channel selectedChannel = (Database.Types.Channel)ChannelsListView.SelectedItems[0].Tag;
 
-                Image imageFaded = ImageUtils.SetImageOpacity((Image)Database.ImageFile.Get(selectedChannel.ID, Database.Types.ImageType.ChannelIcon), 0.16f);
+                Image imageFaded = ImageUtils.SetImageOpacity((Image)Database.ImageFile.Get(selectedChannel.ID, ImageType.ChannelIcon), 0.16f);
                 BackgroundImageLayout = (imageFaded.Size.Height < Size.Height) ? ImageLayout.Stretch : ImageLayout.Center;
                 BackgroundImage = imageFaded;
 
@@ -111,7 +111,7 @@ namespace VideoNotifications {
                 Database.Types.Video selectedVideo = (Database.Types.Video)VideosListView.SelectedItems[0].Tag;
                 string openVideoTip = $"Open video in browser.{Environment.NewLine}{selectedVideo.URL}";
 
-                VideoPictureBox.Image = Database.ImageFile.Get(selectedVideo.ID, Database.Types.ImageType.VideoThumbnail);
+                VideoPictureBox.Image = Database.ImageFile.Get(selectedVideo.ID, ImageType.VideoThumbnail);
                 VideoPictureBox.Visible = true;
                 GeneralToolTip.SetToolTip(VideoPictureBox, openVideoTip);
                 VideoDescriptionLabel.Text = StringUtils.FormatVideoDescription(selectedVideo.Description);
@@ -128,13 +128,13 @@ namespace VideoNotifications {
             }
         }
 
-        private void WatchedColorLabel_Click(object sender, EventArgs e) => SetStatus(Database.Types.WatchStatus.Watched);
+        private void WatchedColorLabel_Click(object sender, EventArgs e) => SetStatus(WatchStatus.Watched);
 
-        private void UnwatchedColorLabel_Click(object sender, EventArgs e) => SetStatus(Database.Types.WatchStatus.Unwatched);
+        private void UnwatchedColorLabel_Click(object sender, EventArgs e) => SetStatus(WatchStatus.Unwatched);
 
-        private void DismissedColorLabel_Click(object sender, EventArgs e) => SetStatus(Database.Types.WatchStatus.Dismissed);
+        private void DismissedColorLabel_Click(object sender, EventArgs e) => SetStatus(WatchStatus.Dismissed);
 
-        private void IgnoredColorLabel_Click(object sender, EventArgs e) => SetStatus(Database.Types.WatchStatus.Ignored);
+        private void IgnoredColorLabel_Click(object sender, EventArgs e) => SetStatus(WatchStatus.Ignored);
 
         private void VideoPictureBox_Click(object sender, EventArgs e) => VideoURLLinkLabel_LinkClicked(new object(), null);
 
@@ -207,7 +207,7 @@ namespace VideoNotifications {
                 List<Database.Types.Video> videoInfo = new YouTube.Videos().Bulk(videosToGetInfo);
                 foreach (Database.Types.Video video in videoInfo) {
                     Database.Videos.Insert(video);
-                    Database.ImageFile.Insert(video.ThumbnailURL, video.ID, Database.Types.ImageType.VideoThumbnail);
+                    Database.ImageFile.Insert(video.ThumbnailURL, video.ID, ImageType.VideoThumbnail);
                 }
 
                 e.Result = true;

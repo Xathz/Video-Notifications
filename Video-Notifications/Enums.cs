@@ -1,4 +1,4 @@
-﻿namespace VideoNotifications.Database.Types {
+﻿namespace VideoNotifications {
 
     /// <summary>
     /// Video watched status.

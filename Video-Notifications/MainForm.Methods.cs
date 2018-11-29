@@ -53,7 +53,7 @@ namespace VideoNotifications {
         /// <param name="channel">Channel to add.</param>
         private void AddChannelToListView(Database.Types.Channel channel) {
             if (!ChannelsImageList.Images.ContainsKey(channel.ID)) {
-                Image resizedImage = ImageUtils.ResizeImage((Image)Database.ImageFile.Get(channel.ID, Database.Types.ImageType.ChannelIcon), 24, 24);
+                Image resizedImage = ImageUtils.ResizeImage((Image)Database.ImageFile.Get(channel.ID, ImageType.ChannelIcon), 24, 24);
                 ChannelsImageList.Images.Add(channel.ID, resizedImage);
             }
 
@@ -108,7 +108,7 @@ namespace VideoNotifications {
         /// Set the selected or all video(s) status.
         /// </summary>
         /// <param name="status">Status to set the video to.</param>
-        private void SetStatus(Database.Types.WatchStatus status) {
+        private void SetStatus(WatchStatus status) {
             if (ModifierKeys == Keys.Shift) {
                 if (MessageBox.Show($"Really mark all videos as {status.ToString()}?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
                     VideosListView.BeginUpdate();
@@ -130,18 +130,18 @@ namespace VideoNotifications {
         }
 
         /// <summary>
-        /// The color based on the video <see cref="Status"/>. Value will be a <see cref="Color"/> or <see cref="SystemColors"/> type.
+        /// The color based on the video <see cref="WatchStatus"/>. Value will be a <see cref="Color"/> or <see cref="SystemColors"/> type.
         /// </summary>
         /// <param name="status">Status to get the color for.</param>
-        private dynamic DisplayStatusColor(Database.Types.WatchStatus status) {
+        private dynamic DisplayStatusColor(WatchStatus status) {
             switch (status) {
-                case Database.Types.WatchStatus.Watched:
+                case WatchStatus.Watched:
                     return Color.LightGreen;
-                case Database.Types.WatchStatus.Unwatched:
+                case WatchStatus.Unwatched:
                     return SystemColors.Window;
-                case Database.Types.WatchStatus.Dismissed:
+                case WatchStatus.Dismissed:
                     return Color.LemonChiffon;
-                case Database.Types.WatchStatus.Ignored:
+                case WatchStatus.Ignored:
                     return Color.Gainsboro;
                 default:
                     return SystemColors.Window;

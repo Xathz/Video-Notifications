@@ -8,7 +8,7 @@ namespace VideoNotifications.Database {
     /// <summary>
     /// Query, insert, update, delete, and other options for the 'channel' <see cref="LiteDB.LiteCollection{Channel}"/>.
     /// </summary>
-    internal abstract class Channels : DatabaseBase {
+    internal abstract class Channels : Base {
 
         /// <summary>
         /// Get all the channels in the database.

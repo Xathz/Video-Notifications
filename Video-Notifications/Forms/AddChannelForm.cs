@@ -74,14 +74,14 @@ namespace VideoNotifications.Forms {
                         Database.Types.Channel channel = new YouTube.Channel().Info(clickedChannel.ID);
                         Database.Channels.Upsert(channel);
 
-                        Database.ImageFile.Insert(channel.BannerURL, channel.ID, Database.Types.ImageType.ChannelBanner);
-                        Database.ImageFile.Insert(channel.ThumbnailURL, channel.ID, Database.Types.ImageType.ChannelIcon);
+                        Database.ImageFile.Insert(channel.BannerURL, channel.ID, ImageType.ChannelBanner);
+                        Database.ImageFile.Insert(channel.ThumbnailURL, channel.ID, ImageType.ChannelIcon);
 
                         List<Database.Types.Video> videos = new YouTube.Channel().RecentVideos(channel.ID);
                         foreach (Database.Types.Video video in videos) {
                             video.WatchStatus = SettingsManager.Configuration.NewChannelDefaultVideoStatus;
                             Database.Videos.Insert(video);
-                            Database.ImageFile.Insert(video.ThumbnailURL, video.ID, Database.Types.ImageType.VideoThumbnail);
+                            Database.ImageFile.Insert(video.ThumbnailURL, video.ID, ImageType.VideoThumbnail);
                         }
 
                         FormsManager.StaticMainForm.AddAllChannels();

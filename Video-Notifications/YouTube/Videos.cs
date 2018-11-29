@@ -6,7 +6,7 @@ using API = Google.Apis.YouTube.v3;
 
 namespace VideoNotifications.YouTube {
 
-    internal class Videos : YouTubeBase {
+    internal class Videos : Base {
 
         /// <summary>
         /// Get information about a single video.
@@ -30,7 +30,7 @@ namespace VideoNotifications.YouTube {
                     Duration = TimeSpanUtils.ConvertDuration(response.ContentDetails.Duration),
                     Posted = response.Snippet.PublishedAt,
                     ThumbnailURL = GetBestThumbnail(response.Snippet.Thumbnails),
-                    WatchStatus = Database.Types.WatchStatus.Unwatched
+                    WatchStatus = WatchStatus.Unwatched
                 };
 
                 LoggingManager.Log.Info($"Information processed for '{video.ID}' posted by '{video.ChannelID}'.");
@@ -87,7 +87,7 @@ namespace VideoNotifications.YouTube {
                             Duration = TimeSpanUtils.ConvertDuration(video.ContentDetails.Duration),
                             Posted = video.Snippet.PublishedAt,
                             ThumbnailURL = GetBestThumbnail(video.Snippet.Thumbnails),
-                            WatchStatus = Database.Types.WatchStatus.Unwatched
+                            WatchStatus = WatchStatus.Unwatched
                         };
 
                         videosReturn.Add(videoInfo);

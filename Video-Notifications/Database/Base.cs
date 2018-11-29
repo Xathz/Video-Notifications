@@ -6,7 +6,7 @@ using VideoNotifications.Settings;
 
 namespace VideoNotifications.Database {
 
-    internal abstract class DatabaseBase {
+    internal abstract class Base {
 
         /// <summary>
         /// The LiteDB Database.
