@@ -42,6 +42,7 @@
             // VideoPictureBox
             // 
             this.VideoPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.VideoPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.VideoPictureBox.ErrorImage = null;
             this.VideoPictureBox.InitialImage = null;
             this.VideoPictureBox.Location = new System.Drawing.Point(160, -1);
@@ -50,11 +51,13 @@
             this.VideoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.VideoPictureBox.TabIndex = 17;
             this.VideoPictureBox.TabStop = false;
+            this.GeneralToolTip.SetToolTip(this.VideoPictureBox, "Open video in browser");
             this.VideoPictureBox.Click += new System.EventHandler(this.VideoPictureBox_Click);
             // 
             // ChannelPictureBox
             // 
             this.ChannelPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.ChannelPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ChannelPictureBox.ErrorImage = null;
             this.ChannelPictureBox.InitialImage = null;
             this.ChannelPictureBox.Location = new System.Drawing.Point(-1, -1);
@@ -63,6 +66,7 @@
             this.ChannelPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.ChannelPictureBox.TabIndex = 17;
             this.ChannelPictureBox.TabStop = false;
+            this.GeneralToolTip.SetToolTip(this.ChannelPictureBox, "Open channel in browser");
             this.ChannelPictureBox.Click += new System.EventHandler(this.ChannelPictureBox_Click);
             // 
             // LinePanel

@@ -30,7 +30,7 @@ namespace VideoNotifications {
 
             ToolStripLabel toolStripLabelInfo = new ToolStripLabel() {
                 TextAlign = ContentAlignment.MiddleLeft,
-                Text = $"v{Version.Parse(Application.ProductVersion).ToString(3)}, by {Application.CompanyName}{Environment.NewLine}Click tray icon to show window",
+                Text = $"v{Version.Parse(Application.ProductVersion).ToString(3)}, by {Application.CompanyName}{Environment.NewLine}Left-click tray icon to show window",
                 ForeColor = SystemColors.ControlDarkDark
             };
             TrayContextMenuStrip.Items.Insert(1, toolStripLabelInfo);

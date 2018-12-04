@@ -20,6 +20,12 @@ namespace VideoNotifications.Database.Types {
         public string ChannelID { get; set; }
 
         /// <summary>
+        /// Lookup full channel information using <see cref="ChannelID"/>.
+        /// </summary>
+        [BsonIgnore]
+        public Channel Channel => new Lazy<Channel>(() => Channels.GetByID(ChannelID)).Value;
+
+        /// <summary>
         /// Video title.
         /// </summary>
         public string Title { get; set; }

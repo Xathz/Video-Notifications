@@ -11,7 +11,6 @@ namespace VideoNotifications.Forms {
 
         private int _Countdown = 2;
         private Database.Types.Video _Video { get; set; }
-        private Database.Types.Channel _Channel { get; set; }
 
         public NotificationForm() {
             InitializeComponent();
@@ -35,7 +34,6 @@ namespace VideoNotifications.Forms {
             }
 
             _Video = video;
-            _Channel = Database.Channels.GetByID(_Video.ChannelID);
 
             Image channelImage = Database.ImageFile.Get(_Video.ChannelID, ImageType.ChannelIcon);
             Image channelImageResized = ImageUtils.ResizeImage(channelImage, 365, 365);
@@ -43,12 +41,9 @@ namespace VideoNotifications.Forms {
             BackgroundImage = channelImageFaded;
 
             ChannelPictureBox.Image = channelImage;
-            ChannelPictureBox.Tag = _Channel.URL;
-
             VideoPictureBox.Image = Database.ImageFile.Get(_Video.ID, ImageType.VideoThumbnail);
-            VideoPictureBox.Tag = _Video.URL;
 
-            ChannelLabel.Text = $"A new video was posted by {_Channel.Title} {_Video.Posted.Value.Humanize()}.";
+            ChannelLabel.Text = $"A new video was posted by {_Video.Channel.Title} {_Video.Posted.Value.Humanize()}.";
             DurationLabel.Text = TimeSpanUtils.ConvertDurationCompact(video.Duration);
 
             MarkButton.Text = $"Close & mark as: (wait {(_Countdown + 1)}s)";
@@ -99,9 +94,9 @@ namespace VideoNotifications.Forms {
             _Countdown--;
         }
 
-        private void VideoPictureBox_Click(object sender, EventArgs e) { }
+        private void VideoPictureBox_Click(object sender, EventArgs e) => ProcessUtils.Start(_Video.URL);
 
-        private void ChannelPictureBox_Click(object sender, EventArgs e) { }
+        private void ChannelPictureBox_Click(object sender, EventArgs e) => ProcessUtils.Start(_Video.Channel.URL);
 
         private void OpenVideoCheckBox_CheckedChanged(object sender, EventArgs e) => SettingsManager.Configuration.NotificationOpenVideo = OpenVideoCheckBox.Checked;
 
