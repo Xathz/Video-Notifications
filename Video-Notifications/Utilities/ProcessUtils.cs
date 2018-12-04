@@ -14,7 +14,7 @@ namespace VideoNotifications.Utilities {
             try {
                 Process.Start(path);
             } catch (Exception ex) {
-                LoggingManager.Log.Error(ex, $"Failed to start: {path}.");
+                LoggingManager.Log.Error(ex, $"Failed to start/open '{path}'.");
             }
         }
 

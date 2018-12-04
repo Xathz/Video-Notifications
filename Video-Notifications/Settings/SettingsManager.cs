@@ -16,7 +16,7 @@ namespace VideoNotifications.Settings {
         /// </summary>
         public static void Load() {
             if (!File.Exists(Constants.SettingsFile)) {
-                LoggingManager.Log.Warn($"Settings file was not found at '{Constants.SettingsFile}', Creating default one.");
+                LoggingManager.Log.Warn($"Settings file was not found at '{Constants.SettingsFile}'! Creating default one.");
                 Save();
             }
 
@@ -25,7 +25,7 @@ namespace VideoNotifications.Settings {
                 Configuration = (Configuration)jsonSerializer.Deserialize(jsonFile, typeof(Configuration));
             }
 
-            LoggingManager.Log.Info("Settings Loaded.");
+            LoggingManager.Log.Info("Settings loaded.");
         }
 
         /// <summary>

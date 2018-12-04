@@ -30,14 +30,10 @@ namespace VideoNotifications {
         /// </summary>
         public static string ApplicationDirectory => Path.GetDirectoryName(ExecutablePath);
 
-        private static string _WorkingDirectory = Path.Combine(ApplicationDirectory, ExecutableName);
         /// <summary>
         /// Working directory for the application.
         /// </summary>
-        public static string WorkingDirectory {
-            get => _WorkingDirectory;
-            set => _WorkingDirectory = value;
-        }
+        public static string WorkingDirectory { get; set; } = Path.Combine(ApplicationDirectory, ExecutableName);
 
         /// <summary>
         /// Log files for the application.
@@ -53,6 +49,26 @@ namespace VideoNotifications {
         /// YouTube video database location.
         /// </summary>
         public static string YouTubeDatabaseFile => Path.Combine(WorkingDirectory, "YouTubeData.db");
+
+        /// <summary>
+        /// Downloaded images directory.
+        /// </summary>
+        public static string ImagesDirectory => Path.Combine(WorkingDirectory, "Images");
+
+        /// <summary>
+        /// Channel banners directory.
+        /// </summary>
+        public static string ChannelBannerDirectory => Path.Combine(ImagesDirectory, "ChannelBanners");
+
+        /// <summary>
+        /// Channel icons directory.
+        /// </summary>
+        public static string ChannelIconDirectory => Path.Combine(ImagesDirectory, "ChannelIcons");
+
+        /// <summary>
+        /// Video thumbnails directory.
+        /// </summary>
+        public static string VideoThumbnailDirectory => Path.Combine(ImagesDirectory, "VideoThumbnails");
 
     }
 

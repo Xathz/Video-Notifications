@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using VideoNotifications.Database.CollectionType;
 using VideoNotifications.Forms;
 using VideoNotifications.Settings;
 using VideoNotifications.Utilities;
@@ -31,7 +30,7 @@ namespace VideoNotifications {
 
             ToolStripLabel toolStripLabelInfo = new ToolStripLabel() {
                 TextAlign = ContentAlignment.MiddleLeft,
-                Text = $"v{Version.Parse(Application.ProductVersion).ToString(3)}, by {Application.CompanyName}{Environment.NewLine}Click tray icon to show window",
+                Text = $"v{Version.Parse(Application.ProductVersion).ToString(3)}, by {Application.CompanyName}{Environment.NewLine}Left-click tray icon to show window",
                 ForeColor = SystemColors.ControlDarkDark
             };
             TrayContextMenuStrip.Items.Insert(1, toolStripLabelInfo);
@@ -40,7 +39,7 @@ namespace VideoNotifications {
             PauseNotificationsMenuItem.Checked = SettingsManager.Configuration.PauseNotifications;
             MinimizeToTrayMenuItem.Checked = SettingsManager.Configuration.MinimizeToTray;
             LightIconMenuItem.Checked = SettingsManager.Configuration.UseLightTrayIcon;
-            YouTubeCheckTimer.Interval = (SettingsManager.Configuration.CheckForNewVideosEveryMinutes * 60000);
+            YouTubeCheckTimer.Interval = (SettingsManager.Configuration.CheckForNewVideosEvery * 60000);
 
             if (SettingsManager.Configuration.MainWindow.PositionSet()) {
                 Location = new Point(SettingsManager.Configuration.MainWindow.X, SettingsManager.Configuration.MainWindow.Y);
@@ -93,13 +92,13 @@ namespace VideoNotifications {
 
         private void ChannelsListView_SelectedIndexChanged(object sender, EventArgs e) {
             if (ChannelsListView.SelectedItems.Count == 1) {
-                YouTubeChannel selectedChannel = (YouTubeChannel)ChannelsListView.SelectedItems[0].Tag;
+                Database.Types.Channel selectedChannel = (Database.Types.Channel)ChannelsListView.SelectedItems[0].Tag;
 
-                Image imageFaded = ImageUtils.SetImageOpacity(Database.Files.GetThumbnail(selectedChannel.ChannelID), 0.16f);
+                Image imageFaded = ImageUtils.SetImageOpacity((Image)Database.ImageFile.Get(selectedChannel.ID, ImageType.ChannelIcon), 0.16f);
                 BackgroundImageLayout = (imageFaded.Size.Height < Size.Height) ? ImageLayout.Stretch : ImageLayout.Center;
                 BackgroundImage = imageFaded;
 
-                AddChannelVideos(selectedChannel.ChannelID);
+                AddChannelVideos(selectedChannel.ID);
 
                 if (VideosListView.Items.Count > 0) { VideoStatusPanel.Visible = true; }
             } else {
@@ -109,10 +108,10 @@ namespace VideoNotifications {
 
         private void VideosListView_SelectedIndexChanged(object sender, EventArgs e) {
             if (VideosListView.SelectedItems.Count == 1) {
-                YouTubeVideo selectedVideo = (YouTubeVideo)VideosListView.SelectedItems[0].Tag;
+                Database.Types.Video selectedVideo = (Database.Types.Video)VideosListView.SelectedItems[0].Tag;
                 string openVideoTip = $"Open video in browser.{Environment.NewLine}{selectedVideo.URL}";
 
-                VideoPictureBox.Image = Database.Files.GetThumbnail(selectedVideo.VideoID);
+                VideoPictureBox.Image = Database.ImageFile.Get(selectedVideo.ID, ImageType.VideoThumbnail);
                 VideoPictureBox.Visible = true;
                 GeneralToolTip.SetToolTip(VideoPictureBox, openVideoTip);
                 VideoDescriptionLabel.Text = StringUtils.FormatVideoDescription(selectedVideo.Description);
@@ -129,13 +128,13 @@ namespace VideoNotifications {
             }
         }
 
-        private void WatchedColorLabel_Click(object sender, EventArgs e) => SetStatus(Status.Watched);
+        private void WatchedColorLabel_Click(object sender, EventArgs e) => SetStatus(WatchStatus.Watched);
 
-        private void UnwatchedColorLabel_Click(object sender, EventArgs e) => SetStatus(Status.Unwatched);
+        private void UnwatchedColorLabel_Click(object sender, EventArgs e) => SetStatus(WatchStatus.Unwatched);
 
-        private void DismissedColorLabel_Click(object sender, EventArgs e) => SetStatus(Status.Dismissed);
+        private void DismissedColorLabel_Click(object sender, EventArgs e) => SetStatus(WatchStatus.Dismissed);
 
-        private void IgnoredColorLabel_Click(object sender, EventArgs e) => SetStatus(Status.Ignored);
+        private void IgnoredColorLabel_Click(object sender, EventArgs e) => SetStatus(WatchStatus.Ignored);
 
         private void VideoPictureBox_Click(object sender, EventArgs e) => VideoURLLinkLabel_LinkClicked(new object(), null);
 
@@ -196,19 +195,19 @@ namespace VideoNotifications {
                 }
 
                 List<string> videosToGetInfo = new List<string>();
-                foreach (YouTubeChannel channel in Database.Channels.GetAll()) {
-                    YouTube.ChannelVideos channelVideos = new YouTube.ChannelVideos(channel.ChannelID, true);
-                    foreach (string videoID in channelVideos.VideosIDs) {
-                        if (!Database.Videos.Exists(videoID)) {
-                            videosToGetInfo.Add(videoID);
+                foreach (Database.Types.Channel channel in Database.Channels.GetAll()) {
+                    List<string> videoIDs = new YouTube.Channel().RecentVideoIDs(channel.ID);
+                    foreach (string id in videoIDs) {
+                        if (!Database.Videos.Exists(id)) {
+                            videosToGetInfo.Add(id);
                         }
                     }
                 }
 
-                YouTube.VideoInfoBulk videoInfoBulk = new YouTube.VideoInfoBulk(videosToGetInfo);
-                foreach (YouTubeVideo video in videoInfoBulk.Videos) {
+                List<Database.Types.Video> videoInfo = new YouTube.Videos().Bulk(videosToGetInfo);
+                foreach (Database.Types.Video video in videoInfo) {
                     Database.Videos.Insert(video);
-                    Database.Files.StoreImage($"{video.VideoID}-thumbnail", NetworkUtils.DownloadFileToMemoryStream(video.ThumbnailURL));
+                    Database.ImageFile.Insert(video.ThumbnailURL, video.ID, ImageType.VideoThumbnail);
                 }
 
                 e.Result = true;
@@ -220,7 +219,7 @@ namespace VideoNotifications {
 
         private void YouTubeCheckWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
             if (SettingsManager.Configuration.PauseNotifications) { return; }
-            IEnumerable<YouTubeVideo> unwatchedVideos = Database.Videos.GetAllUnwatched();
+            IEnumerable<Database.Types.Video> unwatchedVideos = Database.Videos.GetAllUnwatched();
 
             if (unwatchedVideos.Count() > 0) {
                 if ((bool)e.Result == false) {
@@ -229,7 +228,7 @@ namespace VideoNotifications {
                     LoggingManager.Log.Info($"{unwatchedVideos.Count()} unwatched videos were found.");
                 }
 
-                foreach (YouTubeVideo video in unwatchedVideos) {
+                foreach (Database.Types.Video video in unwatchedVideos) {
                     NotificationForm newNotification = new NotificationForm(video);
                     newNotification.Show();
                 }

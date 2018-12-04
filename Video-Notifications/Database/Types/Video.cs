@@ -1,23 +1,29 @@
 ﻿using System;
 using LiteDB;
 
-namespace VideoNotifications.Database.CollectionType {
+namespace VideoNotifications.Database.Types {
 
     /// <summary>
     /// A YouTube video.
     /// </summary>
-    public class YouTubeVideo {
+    public class Video {
 
         /// <summary>
         /// Video ID.
         /// </summary>
         [BsonId]
-        public string VideoID { get; set; }
+        public string ID { get; set; }
 
         /// <summary>
-        /// Channel ID. Corresponds to a <see cref="YouTubeChannel.ChannelID"/>.
+        /// Channel ID. Corresponds to a <see cref="Channel.ID"/>.
         /// </summary>
         public string ChannelID { get; set; }
+
+        /// <summary>
+        /// Lookup full channel information using <see cref="ChannelID"/>.
+        /// </summary>
+        [BsonIgnore]
+        public Channel Channel => new Lazy<Channel>(() => Channels.GetByID(ChannelID)).Value;
 
         /// <summary>
         /// Video title.
@@ -40,19 +46,20 @@ namespace VideoNotifications.Database.CollectionType {
         public DateTime? Posted { get; set; }
 
         /// <summary>
-        /// URL to the video. https://www.youtube.com/watch?v=<see cref="VideoID"/>
+        /// URL to the video. https://www.youtube.com/watch?v=<see cref="ID"/>
         /// </summary>
-        public string URL { get; set; }
+        [BsonIgnore]
+        public string URL => $"https://www.youtube.com/watch?v={ID}";
 
         /// <summary>
-        /// URL to the <see cref="YouTube.YouTubeBase.GetBestThumbnail(Google.Apis.YouTube.v3.Data.ThumbnailDetails)"/> result.
+        /// URL to the <see cref="YouTube.Base.GetBestThumbnail(Google.Apis.YouTube.v3.Data.ThumbnailDetails)"/> result.
         /// </summary>
         public string ThumbnailURL { get; set; }
 
         /// <summary>
         /// Watched status of the video.
         /// </summary>
-        public Status Status { get; set; }
+        public WatchStatus WatchStatus { get; set; }
 
     }
 

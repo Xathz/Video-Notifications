@@ -2,8 +2,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Humanizer;
-using VideoNotifications.Database;
-using VideoNotifications.Database.CollectionType;
 using VideoNotifications.Settings;
 using VideoNotifications.Utilities;
 
@@ -12,8 +10,7 @@ namespace VideoNotifications.Forms {
     public partial class NotificationForm : Form {
 
         private int _Countdown = 2;
-        private YouTubeVideo _Video { get; set; }
-        private YouTubeChannel _Channel { get; set; }
+        private Database.Types.Video _Video { get; set; }
 
         public NotificationForm() {
             InitializeComponent();
@@ -26,7 +23,7 @@ namespace VideoNotifications.Forms {
             }
         }
 
-        public NotificationForm(YouTubeVideo video) {
+        public NotificationForm(Database.Types.Video video) {
             InitializeComponent();
             SetIcon();
 
@@ -37,29 +34,25 @@ namespace VideoNotifications.Forms {
             }
 
             _Video = video;
-            _Channel = Channels.GetByID(_Video.ChannelID);
 
-            Image channelImage = Files.GetThumbnail(_Video.ChannelID);
+            Image channelImage = Database.ImageFile.Get(_Video.ChannelID, ImageType.ChannelIcon);
             Image channelImageResized = ImageUtils.ResizeImage(channelImage, 365, 365);
             Image channelImageFaded = ImageUtils.SetImageOpacity(channelImageResized, 0.16f);
             BackgroundImage = channelImageFaded;
 
             ChannelPictureBox.Image = channelImage;
-            ChannelPictureBox.Tag = _Channel.URL;
+            VideoPictureBox.Image = Database.ImageFile.Get(_Video.ID, ImageType.VideoThumbnail);
 
-            VideoPictureBox.Image = Files.GetThumbnail(_Video.VideoID);
-            VideoPictureBox.Tag = _Video.URL;
-
-            ChannelLabel.Text = $"A new video was posted by {_Channel.Title} {_Video.Posted.Value.Humanize()}.";
+            ChannelLabel.Text = $"A new video was posted by {_Video.Channel.Title} {_Video.Posted.Value.Humanize()}.";
             DurationLabel.Text = TimeSpanUtils.ConvertDurationCompact(video.Duration);
 
             MarkButton.Text = $"Close & mark as: (wait {(_Countdown + 1)}s)";
             OpenVideoCheckBox.Checked = SettingsManager.Configuration.NotificationOpenVideo;
 
-            OpenVideoStatusComboBox.Items.Add(Status.Unwatched);
-            OpenVideoStatusComboBox.Items.Add(Status.Watched);
-            OpenVideoStatusComboBox.Items.Add(Status.Dismissed);
-            OpenVideoStatusComboBox.Items.Add(Status.Ignored);
+            OpenVideoStatusComboBox.Items.Add(WatchStatus.Unwatched);
+            OpenVideoStatusComboBox.Items.Add(WatchStatus.Watched);
+            OpenVideoStatusComboBox.Items.Add(WatchStatus.Dismissed);
+            OpenVideoStatusComboBox.Items.Add(WatchStatus.Ignored);
             OpenVideoStatusComboBox.SelectedItem = SettingsManager.Configuration.NotificationDefaultVideoStatus;
 
             ControlBox = false;
@@ -101,14 +94,14 @@ namespace VideoNotifications.Forms {
             _Countdown--;
         }
 
-        private void VideoPictureBox_Click(object sender, EventArgs e) { }
+        private void VideoPictureBox_Click(object sender, EventArgs e) => ProcessUtils.Start(_Video.URL);
 
-        private void ChannelPictureBox_Click(object sender, EventArgs e) { }
+        private void ChannelPictureBox_Click(object sender, EventArgs e) => ProcessUtils.Start(_Video.Channel.URL);
 
         private void OpenVideoCheckBox_CheckedChanged(object sender, EventArgs e) => SettingsManager.Configuration.NotificationOpenVideo = OpenVideoCheckBox.Checked;
 
         private void MarkButton_Click(object sender, EventArgs e) {
-            Videos.SetStatus(_Video.VideoID, (Status)Enum.Parse(typeof(Status), OpenVideoStatusComboBox.SelectedItem.ToString()));
+            Database.Videos.SetStatus(_Video.ID, (WatchStatus)Enum.Parse(typeof(WatchStatus), OpenVideoStatusComboBox.SelectedItem.ToString()));
             if (OpenVideoCheckBox.Checked) { ProcessUtils.Start(_Video.URL); }
 
             Close();

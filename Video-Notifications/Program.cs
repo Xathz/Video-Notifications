@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using VideoNotifications.Database;
 using VideoNotifications.Forms;
 using VideoNotifications.Settings;
 
@@ -33,10 +32,14 @@ namespace VideoNotifications {
 
             Directory.CreateDirectory(Constants.WorkingDirectory);
             Directory.CreateDirectory(Constants.LogDirectory);
+            Directory.CreateDirectory(Constants.ImagesDirectory);
+            Directory.CreateDirectory(Constants.ChannelBannerDirectory);
+            Directory.CreateDirectory(Constants.ChannelIconDirectory);
+            Directory.CreateDirectory(Constants.VideoThumbnailDirectory);
 
             LoggingManager.Initialize();
             SettingsManager.Load();
-            DatabaseBase.Initialize();
+            Database.Base.Initialize();
 
             FormsManager.CloseSplashForm();
             if (string.IsNullOrWhiteSpace(SettingsManager.Configuration.YouTubeAPIKey)) {

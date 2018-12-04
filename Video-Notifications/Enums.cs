@@ -1,9 +1,9 @@
-﻿namespace VideoNotifications.Database.CollectionType {
+﻿namespace VideoNotifications {
 
     /// <summary>
     /// Video watched status.
     /// </summary>
-    public enum Status {
+    public enum WatchStatus {
 
         /// <summary>
         /// The video is unwatched. This is the default status.
@@ -24,6 +24,28 @@
         /// Video was watched.
         /// </summary>
         Watched
+
+    }
+
+    /// <summary>
+    /// Type of image.
+    /// </summary>
+    public enum ImageType {
+
+        /// <summary>
+        /// Channel banner.
+        /// </summary>
+        ChannelBanner,
+
+        /// <summary>
+        /// Channel icon.
+        /// </summary>
+        ChannelIcon,
+
+        /// <summary>
+        /// Video thumbnail
+        /// </summary>
+        VideoThumbnail
 
     }
 

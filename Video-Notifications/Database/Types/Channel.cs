@@ -1,17 +1,17 @@
 ﻿using LiteDB;
 
-namespace VideoNotifications.Database.CollectionType {
+namespace VideoNotifications.Database.Types {
 
     /// <summary>
     /// A YouTube channel.
     /// </summary>
-    public class YouTubeChannel {
+    public class Channel {
 
         /// <summary>
         /// Channel ID.
         /// </summary>
         [BsonId]
-        public string ChannelID { get; set; }
+        public string ID { get; set; }
 
         /// <summary>
         /// Channel title.
@@ -24,9 +24,10 @@ namespace VideoNotifications.Database.CollectionType {
         public string Description { get; set; }
 
         /// <summary>
-        /// URL to the channel. https://www.youtube.com/channel/<see cref="ChannelID"/>
+        /// URL to the channel. https://www.youtube.com/channel/<see cref="ID"/>
         /// </summary>
-        public string URL { get; set; }
+        [BsonIgnore]
+        public string URL => $"https://www.youtube.com/channel/{ID}";
 
         /// <summary>
         /// URL to the channel banner.
@@ -34,7 +35,7 @@ namespace VideoNotifications.Database.CollectionType {
         public string BannerURL { get; set; }
 
         /// <summary>
-        /// URL to the <see cref="YouTube.YouTubeBase.GetBestThumbnail(Google.Apis.YouTube.v3.Data.ThumbnailDetails)"/> result.
+        /// URL to the <see cref="YouTube.Base.GetBestThumbnail(Google.Apis.YouTube.v3.Data.ThumbnailDetails)"/> result.
         /// </summary>
         public string ThumbnailURL { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using VideoNotifications.Database.CollectionType;
+using VideoNotifications.Database.Types;
 
 namespace VideoNotifications.Settings {
 
@@ -41,26 +41,32 @@ namespace VideoNotifications.Settings {
         /// When a new video notification is shown, set the video status to this.
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public Status NotificationDefaultVideoStatus { get; set; } = Status.Watched;
+        public WatchStatus NotificationDefaultVideoStatus { get; set; } = WatchStatus.Watched;
 
         /// <summary>
         /// When a new channel is added, set the video status to this.
         /// This only applies to the first batch of videos that gets added to the database, when you add a new channel.
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public Status NewChannelDefaultVideoStatus { get; set; } = Status.Unwatched;
+        public WatchStatus NewChannelDefaultVideoStatus { get; set; } = WatchStatus.Unwatched;
 
         /// <summary>
         /// Check YouTube every # (this) minutes for new videos.
-        /// It is recommended to not set this lower than 10 minutes.
+        /// It is not recommended to set this lower than 10 minutes.
         /// </summary>
-        public int CheckForNewVideosEveryMinutes { get; set; } = 30;
+        public int CheckForNewVideosEvery { get; set; } = 30;
 
         /// <summary>
         /// Maximum videos to keep per channel, videos over this limit will be removed
         /// from the database starting with the oldest each time the application is started.
         /// </summary>
         public int MaximumVideosToKeepPerChannel { get; set; } = 50;
+
+        /// <summary>
+        /// Images are cached in memory when loaded from the disk.
+        /// Remove images from cache if unused/not accessed for more than (this) minutes.
+        /// </summary>
+        public int ImageCacheLifetime { get; set; } = 60;
 
         /// <summary>
         /// Main window location [X, Y] and size [Width, Height].
