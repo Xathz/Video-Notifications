@@ -74,7 +74,6 @@ namespace VideoNotifications.Forms {
                         Database.Types.Channel channel = new YouTube.Channel().Info(clickedChannel.ID);
                         Database.Channels.Upsert(channel);
 
-                        Database.ImageFile.Insert(channel.BannerURL, channel.ID, ImageType.ChannelBanner);
                         Database.ImageFile.Insert(channel.ThumbnailURL, channel.ID, ImageType.ChannelIcon);
 
                         List<Database.Types.Video> videos = new YouTube.Channel().RecentVideos(channel.ID);

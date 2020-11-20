@@ -15,7 +15,7 @@ namespace VideoNotifications.YouTube {
         public Database.Types.Channel Info(string channelID) {
             try {
                 // https://developers.google.com/youtube/v3/docs/channels/list
-                API.ChannelsResource.ListRequest channelInfo = APIService.Channels.List("id,snippet,brandingSettings");
+                API.ChannelsResource.ListRequest channelInfo = APIService.Channels.List("id,snippet");
                 channelInfo.Id = channelID;
                 channelInfo.MaxResults = 1;
                 channelInfo.PrettyPrint = false;
@@ -26,7 +26,6 @@ namespace VideoNotifications.YouTube {
                     ID = response.Id,
                     Title = response.Snippet.Title,
                     Description = response.Snippet.Description,
-                    BannerURL = response.BrandingSettings.Image.BannerMobileExtraHdImageUrl,
                     ThumbnailURL = GetBestThumbnail(response.Snippet.Thumbnails)
                 };
 

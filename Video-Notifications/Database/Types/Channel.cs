@@ -30,11 +30,6 @@ namespace VideoNotifications.Database.Types {
         public string URL => $"https://www.youtube.com/channel/{ID}";
 
         /// <summary>
-        /// URL to the channel banner.
-        /// </summary>
-        public string BannerURL { get; set; }
-
-        /// <summary>
         /// URL to the <see cref="YouTube.Base.GetBestThumbnail(Google.Apis.YouTube.v3.Data.ThumbnailDetails)"/> result.
         /// </summary>
         public string ThumbnailURL { get; set; }

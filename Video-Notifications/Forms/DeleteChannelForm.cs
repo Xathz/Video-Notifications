@@ -63,7 +63,6 @@ namespace VideoNotifications.Forms {
                             Database.ImageFile.Delete(video.ID, ImageType.VideoThumbnail);
                         }
                         Database.Channels.Delete(channel);
-                        Database.ImageFile.Delete(channel.ID, ImageType.ChannelBanner);
                         Database.ImageFile.Delete(channel.ID, ImageType.ChannelIcon);
 
                         AddAllChannels();

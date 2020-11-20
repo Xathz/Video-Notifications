@@ -56,11 +56,6 @@ namespace VideoNotifications {
         public static string ImagesDirectory => Path.Combine(WorkingDirectory, "Images");
 
         /// <summary>
-        /// Channel banners directory.
-        /// </summary>
-        public static string ChannelBannerDirectory => Path.Combine(ImagesDirectory, "ChannelBanners");
-
-        /// <summary>
         /// Channel icons directory.
         /// </summary>
         public static string ChannelIconDirectory => Path.Combine(ImagesDirectory, "ChannelIcons");

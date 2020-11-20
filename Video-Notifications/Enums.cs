@@ -33,11 +33,6 @@
     public enum ImageType {
 
         /// <summary>
-        /// Channel banner.
-        /// </summary>
-        ChannelBanner,
-
-        /// <summary>
         /// Channel icon.
         /// </summary>
         ChannelIcon,

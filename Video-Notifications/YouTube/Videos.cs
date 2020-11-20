@@ -28,7 +28,7 @@ namespace VideoNotifications.YouTube {
                     Title = response.Snippet.Title,
                     Description = response.Snippet.Description,
                     Duration = TimeSpanUtils.ConvertDuration(response.ContentDetails.Duration),
-                    Posted = response.Snippet.PublishedAt,
+                    Posted = DateTime.Parse(response.Snippet.PublishedAt),
                     ThumbnailURL = GetBestThumbnail(response.Snippet.Thumbnails),
                     WatchStatus = WatchStatus.Unwatched
                 };
@@ -85,7 +85,7 @@ namespace VideoNotifications.YouTube {
                             Title = video.Snippet.Title,
                             Description = video.Snippet.Description,
                             Duration = TimeSpanUtils.ConvertDuration(video.ContentDetails.Duration),
-                            Posted = video.Snippet.PublishedAt,
+                            Posted = DateTime.Parse(video.Snippet.PublishedAt),
                             ThumbnailURL = GetBestThumbnail(video.Snippet.Thumbnails),
                             WatchStatus = WatchStatus.Unwatched
                         };

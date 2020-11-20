@@ -33,7 +33,6 @@ namespace VideoNotifications {
             Directory.CreateDirectory(Constants.WorkingDirectory);
             Directory.CreateDirectory(Constants.LogDirectory);
             Directory.CreateDirectory(Constants.ImagesDirectory);
-            Directory.CreateDirectory(Constants.ChannelBannerDirectory);
             Directory.CreateDirectory(Constants.ChannelIconDirectory);
             Directory.CreateDirectory(Constants.VideoThumbnailDirectory);
 
